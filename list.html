@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PetConnect - List an Animal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="bg-gray-100 font-sans">
+  <!-- Navigation Bar -->
+  <nav class="bg-blue-600 text-white p-4 sticky top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold">PetConnect</a>
+      <div class="space-x-4">
+        <a href="index.html" class="hover:underline">Home</a>
+        <a href="find.html" class="hover:underline">Find a Pet</a>
+        <a href="adopt.html" class="hover:underline">Adopt a Pet</a>
+        <a href="list.html" class="hover:underline">List an Animal</a>
+        <a href="about.html" class="hover:underline">About Us</a>
+        <a href="contact.html" class="hover:underline">Contact Us</a>
+        <a href="donate.html" class="hover:underline">Donate</a>
+        <a href="profile.html" class="hover:underline hidden" id="profileLink">Profile</a>
+        <a href="#" class="hover:underline hidden" id="logoutLink" onclick="logout()">Logout</a>
+        <a href="#" class="hover:underline" id="loginLink" onclick="showLoginModal()">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- List an Animal Section -->
+  <section class="container mx-auto py-12">
+    <h2 class="text-3xl font-bold text-center mb-8">List a Stray Animal</h2>
+    <form id="listAnimalForm" class="bg-white p-6 rounded-lg shadow-md">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="name" class="block text-sm font-medium">Name</label>
+          <input type="text" id="name" class="w-full p-2 border rounded" required>
+        </div>
+        <div>
+          <label for="species" class="block text-sm font-medium">Species</label>
+          <select id="species" class="w-full p-2 border rounded" required>
+            <option value="dog">Dog</option>
+            <option value="cat">Cat</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div>
+          <label for="breed" class="block text-sm font-medium">Breed</label>
+          <input type="text" id="breed" class="w-full p-2 border rounded">
+        </div>
+        <div>
+          <label for="age" class="block text-sm font-medium">Age</label>
+          <input type="number" id="age" class="w-full p-2 border rounded">
+        </div>
+        <div>
+          <label for="gender" class="block text-sm font-medium">Gender</label>
+          <select id="gender" class="w-full p-2 border rounded">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="unknown">Unknown</option>
+          </select>
+        </div>
+        <div>
+          <label for="healthStatus" class="block text-sm font-medium">Health Status</label>
+          <input type="text" id="healthStatus" class="w-full p-2 border rounded">
+        </div>
+      </div>
+      <div class="mt-4">
+        <label for="description" class="block text-sm font-medium">Description</label>
+        <textarea id="description" class="w-full p-2 border rounded" rows="4"></textarea>
+      </div>
+      <div class="mt-4">
+        <label for="images" class="block text-sm font-medium">Images</label>
+        <input type="file" id="images" class="w-full p-2 border rounded" multiple accept="image/*">
+      </div>
+      <div class="mt-4">
+        <label for="location" class="block text-sm font-medium">Location (e.g., Delhi)</label>
+        <input type="text" id="location" class="w-full p-2 border rounded" required>
+      </div>
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700">List Animal</button>
+    </form>
+  </section>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg w-full max-w-md">
+      <h2 class="text-2xl font-bold mb-4">Login</h2>
+      <form id="loginForm">
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-medium">Email</label>
+          <input type="email" id="email" class="w-full p-2 border rounded" required>
+        </div>
+        <div class="mb-4">
+          <label for="password" class="block text-sm font-medium">Password</label>
+          <input type="password" id="password" class="w-full p-2 border rounded" required>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Login</button>
+        <button type="button" class="ml-2 text-gray-600" onclick="hideLoginModal()">Cancel</button>
+      </form>
+      <p class="mt-4">Don't have an account? <a href="#" onclick="showSignupModal()" class="text-blue-600">Sign Up</a></p>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div id="signupModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg w-full max-w-md">
+      <h2 class="text-2xl font-bold mb-4">Sign Up</h2>
+      <form id="signupForm">
+        <div class="mb-4">
+          <label for="signupName" class="block text-sm font-medium">Name</label>
+          <input type="text" id="signupName" class="w-full p-2 border rounded" required>
+        </div>
+        <div class="mb-4">
+          <label for="signupEmail" class="block text-sm font-medium">Email</label>
+          <input type="email" id="signupEmail" class="w-full p-2 border rounded" required>
+        </div>
+        <div class="mb-4">
+          <label for="signupPassword" class="block text-sm font-medium">Password</label>
+          <input type="password" id="signupPassword" class="w-full p-2 border rounded" required>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sign Up</button>
+        <button type="button" class="ml-2 text-gray-600" onclick="hideSignupModal()">Cancel</button>
+      </form>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>

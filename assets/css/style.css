@@ -1,0 +1,15 @@
+/* Custom styles for PetConnect */
+.animal-card img {
+  object-fit: cover;
+  height: 200px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.animal-card {
+  transition: transform 0.2s;
+}
+
+.animal-card:hover {
+  transform: scale(1.05);
+}
