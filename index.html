@@ -3,122 +3,596 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PetConnect - Home</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <title>Pet Connect - Find Your Perfect Companion</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .gradient-bg { 
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+      position: relative;
+    }
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .hero-pattern-grid { 
+      background-image: 
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+    .hero-overlay {
+      background: rgba(30, 64, 175, 0.1);
+      backdrop-filter: blur(1px);
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans">
-  <!-- Navigation Bar -->
-  <nav class="bg-blue-600 text-white p-4 sticky top-0 z-50">
-    <div class="container mx-auto flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-bold">PetConnect</a>
-      <div class="space-x-4">
-        <a href="index.html" class="hover:underline">Home</a>
-        <a href="find.html" class="hover:underline">Find a Pet</a>
-        <a href="adopt.html" class="hover:underline">Adopt a Pet</a>
-        <a href="list.html" class="hover:underline">List an Animal</a>
-        <a href="about.html" class="hover:underline">About Us</a>
-        <a href="contact.html" class="hover:underline">Contact Us</a>
-        <a href="donate.html" class="hover:underline">Donate</a>
-        <a href="profile.html" class="hover:underline hidden" id="profileLink">Profile</a>
-        <a href="#" class="hover:underline hidden" id="logoutLink" onclick="logout()">Logout</a>
-        <a href="#" class="hover:underline" id="loginLink" onclick="showLoginModal()">Login</a>
+<body class="bg-gray-50">
+  <!-- Navigation -->
+  <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-6">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center">
+          <i class="fas fa-paw text-blue-600 text-2xl mr-2"></i>
+          <a href="index.html" class="text-2xl font-bold text-gray-800">Pet Connect</a>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+  <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Home</a>
+  <a href="find.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Find a Pet</a>
+  <a href="list.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">List an Animal</a>
+  <a href="about.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">About</a>
+  <a href="donate.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Donate</a>
+  <a href="contact.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Contact</a>
+  <a href="profile.html" id="profileLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden">Profile</a>
+  <a href="#" id="logoutLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden" onclick="logout()">Logout</a>
+  <a href="#" id="loginLink" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300" onclick="showLoginModal()">Login</a>
+  <a href="admin.html" id="adminLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden">Admin</a>
+</div>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
 
   <!-- Hero Section -->
-  <section class="bg-blue-100 py-16 text-center">
-    <div class="container mx-auto">
-      <h1 class="text-4xl font-bold mb-4">Find Your Furry Friend</h1>
-      <p class="text-lg mb-6">Help a stray animal find a loving home today!</p>
-      <a href="find.html" class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700">Find a Pet</a>
-      <a href="donate.html" class="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 ml-4">Donate Now</a>
-    </div>
-  </section>
+  <section class="gradient-bg hero-pattern relative min-h-screen flex items-center">
+    <div class="hero-overlay absolute inset-0"></div>
+    <div class="container mx-auto px-6 py-20 relative z-10">
+      <div class="flex flex-col lg:flex-row items-center min-h-[80vh]">
+        <!-- Left Content -->
+        <div class="lg:w-1/2 text-black mb-12 lg:mb-0 lg:pr-12">
+          <div class="max-w-2xl">
+           <h1 class="text-5xl lg:text-7xl font-bold mb-8 leading-tight text-white">
+  Find Your Perfect
+  <span class="text-orange-300 block">Companion</span>
+</h1>
+<p class="text-xl lg:text-2xl mb-10 text-blue-50 leading-relaxed font-light">
+  Connect with loving pets waiting for their forever homes. Every adoption saves a life and brings joy to yours.
+</p>
 
-  <!-- Featured Animals -->
-  <section class="container mx-auto py-12">
-    <h2 class="text-3xl font-bold text-center mb-8">Featured Pets</h2>
-    <div id="featuredAnimals" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Animal cards will be populated by JavaScript -->
-    </div>
-  </section>
 
-  <!-- Dummy Chatbot -->
-  <div class="fixed bottom-4 right-4 z-50">
-    <button id="chatbotToggle" class="bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-      </svg>
-      <span class="sr-only">Open Chatbot</span>
-    </button>
-    <div id="chatbot" class="hidden bg-white shadow-lg rounded-lg p-4 w-80 max-h-96 overflow-y-auto">
-      <h3 class="text-lg font-bold mb-2">PetConnect Chatbot</h3>
-      <div id="chatbotMessages">
-        <button class="block w-full text-left py-2 hover:bg-gray-100" onclick="showChatbotAnswer('How can I adopt a pet?')">How can I adopt a pet?</button>
-        <button class="block w-full text-left py-2 hover:bg-gray-100" onclick="showChatbotAnswer('What animals are available?')">What animals are available?</button>
-        <button class="block w-full text-left py-2 hover:bg-gray-100" onclick="showChatbotAnswer('How to list a stray animal?')">How to list a stray animal?</button>
+
+
+            
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-6 mb-8">
+              <a href="find.html" class="group bg-white text-blue-600 px-8 py-4 rounded-full font-semibold hover:bg-blue-50 transition-all duration-300 text-center shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                <i class="fas fa-search mr-3 group-hover:scale-110 transition-transform"></i>Find a Pet
+              </a>
+              <a href="list.html" class="group bg-white text-blue-600 px-8 py-4 rounded-full font-semibold hover:bg-blue-50 transition-all duration-300 text-center shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                <i class="fas fa-plus mr-3 group-hover:scale-110 transition-transform"></i>List an Animal
+              </a>
+            </div>
+
+            <!-- Trust Indicators -->
+            <div class="flex flex-wrap items-center gap-8 text-blue-100">
+              <div class="flex items-center">
+                <i class="fas fa-heart text-yellow-300 mr-2"></i>
+                <span class="font-medium">1,200+ Pets Adopted</span>
+              </div>
+              <div class="flex items-center">
+                <i class="fas fa-users text-yellow-300 mr-2"></i>
+                <span class="font-medium">850+ Happy Families</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Image -->
+        <div class="lg:w-1/2 flex justify-center lg:justify-end">
+          <div class="relative">
+            <!-- Main Image -->
+            <div class="relative z-10">
+  <img src="https://miro.medium.com/v2/resize:fit:800/1*-auQSenNcet8Mk-XIYSYMQ.jpeg" 
+       alt="Happy pets" 
+       class="rounded-3xl shadow-2xl object-cover"
+       style="width: 700px; height: 500px;">
+</div>
+
+            
+            <!-- Floating Cards -->
+            <div class="absolute -top-6 -left-6 bg-white p-4 rounded-2xl shadow-xl z-20 hidden lg:block">
+              <div class="flex items-center">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                  <i class="fas fa-paw text-blue-600"></i>
+                </div>
+                <div>
+                  <div class="font-semibold text-gray-800">24/7 Support</div>
+                  <div class="text-sm text-gray-600">Always here to help</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-2xl shadow-xl z-20 hidden lg:block">
+              <div class="flex items-center">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                  <i class="fas fa-check text-green-600"></i>
+                </div>
+                <div>
+                  <div class="font-semibold text-gray-800">Verified Pets</div>
+                  <div class="text-sm text-gray-600">Health checked</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Background Decoration -->
+            <div class="absolute -top-4 -right-4 w-32 h-32 bg-yellow-300 rounded-full opacity-20 -z-10"></div>
+            <div class="absolute -bottom-8 -left-8 w-24 h-24 bg-blue-300 rounded-full opacity-30 -z-10"></div>
+          </div>
+        </div>
       </div>
-      <div id="chatbotAnswer" class="mt-2"></div>
     </div>
-  </div>
+    
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+      <i class="fas fa-chevron-down text-2xl"></i>
+    </div>
+  </section>
 
-  <!-- Login Modal -->
-  <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-4">Login</h2>
-      <form id="loginForm">
-        <div class="mb-4">
-          <label for="email" class="block text-sm font-medium">Email</label>
-          <input type="email" id="email" class="w-full p-2 border rounded" required>
+  <!-- Stats Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+        <div class="p-6">
+          <div class="text-4xl font-bold text-blue-600 mb-2">1,200+</div>
+          <div class="text-gray-600 font-medium">Pets Adopted</div>
         </div>
-        <div class="mb-4">
-          <label for="password" class="block text-sm font-medium">Password</label>
-          <input type="password" id="password" class="w-full p-2 border rounded" required>
+        <div class="p-6">
+          <div class="text-4xl font-bold text-blue-600 mb-2">850+</div>
+          <div class="text-gray-600 font-medium">Happy Families</div>
         </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Login</button>
-        <button type="button" class="ml-2 text-gray-600" onclick="hideLoginModal()">Cancel</button>
-      </form>
-      <p class="mt-4">Don't have an account? <a href="#" onclick="showSignupModal()" class="text-blue-600">Sign Up</a></p>
+        <div class="p-6">
+          <div class="text-4xl font-bold text-blue-600 mb-2">300+</div>
+          <div class="text-gray-600 font-medium">Rescue Partners</div>
+        </div>
+        <div class="p-6">
+          <div class="text-4xl font-bold text-blue-600 mb-2">24/7</div>
+          <div class="text-gray-600 font-medium">Support Available</div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Signup Modal -->
-  <div id="signupModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-4">Sign Up</h2>
-      <form id="signupForm">
-        <div class="mb-4">
-          <label for="signupName" class="block text-sm font-medium">Name</label>
-          <input type="text" id="signupName" class="w-full p-2 border rounded" required>
+  <!-- Featured Animals Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-gray-800 mb-4">Meet Our Featured Friends</h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">These amazing pets are looking for their forever homes. Could one of them be perfect for you?</p>
+      </div>
+      
+      <div id="featuredAnimals" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Loading state -->
+        <div class="col-span-full text-center py-12">
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <p class="text-gray-600 mt-4">Loading our amazing pets...</p>
         </div>
-        <div class="mb-4">
-          <label for="signupEmail" class="block text-sm font-medium">Email</label>
-          <input type="email" id="signupEmail" class="w-full p-2 border rounded" required>
+      </div>
+      
+      <div class="text-center mt-12">
+        <a href="find.html" class="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-blue-700 transition duration-300 inline-flex items-center">
+          View All Pets <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-gray-800 mb-4">How Pet Connect Works</h2>
+        <p class="text-xl text-gray-600">Simple steps to find your perfect companion</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div class="text-center">
+          <div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-search text-3xl text-blue-600"></i>
+          </div>
+          <h3 class="text-2xl font-semibold text-gray-800 mb-4">1. Browse Pets</h3>
+          <p class="text-gray-600 leading-relaxed">Search through our database of loving pets using filters for species, age, location, and more.</p>
         </div>
-        <div class="mb-4">
-          <label for="signupPassword" class="block text-sm font-medium">Password</label>
-          <input type="password" id="signupPassword" class="w-full p-2 border rounded" required>
+        
+        <div class="text-center">
+          <div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-heart text-3xl text-blue-600"></i>
+          </div>
+          <h3 class="text-2xl font-semibold text-gray-800 mb-4">2. Apply to Adopt</h3>
+          <p class="text-gray-600 leading-relaxed">Fill out our simple adoption form and tell us why you'd be perfect for your chosen pet.</p>
         </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sign Up</button>
-        <button type="button" class="ml-2 text-gray-600" onclick="hideSignupModal()">Cancel</button>
-      </form>
+        
+        <div class="text-center">
+          <div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-home text-3xl text-blue-600"></i>
+          </div>
+          <h3 class="text-2xl font-semibold text-gray-800 mb-4">3. Welcome Home</h3>
+          <p class="text-gray-600 leading-relaxed">After approval, welcome your new family member home and start your journey together.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+<section class="py-20 bg-blue-50">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">What Our Pet Parents Say</h2>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">Real stories from families who found their perfect companions through Pet Connect</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Testimonial 1 -->
+      <div class="bg-white p-8 rounded-2xl shadow-lg card-hover">
+        <div class="flex items-center mb-6">
+          <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150&q=80" 
+               alt="Sarah Johnson" class="w-16 h-16 rounded-full object-cover mr-4">
+          <div>
+            <h4 class="font-semibold text-gray-800">Sarah Johnson</h4>
+            <p class="text-gray-600">Dog Mom</p>
+          </div>
+        </div>
+        <div class="flex mb-4">
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+        </div>
+        <p class="text-gray-700 leading-relaxed mb-4">
+          "Finding Max through Pet Connect was the best decision we ever made. The process was so smooth and the team was incredibly supportive throughout the adoption."
+        </p>
+        <div class="flex items-center text-blue-600">
+          <i class="fas fa-paw mr-2"></i>
+          <span class="text-sm font-medium">Adopted Max the Golden Retriever</span>
+        </div>
+      </div>
+
+      <!-- Testimonial 2 -->
+      <div class="bg-white p-8 rounded-2xl shadow-lg card-hover">
+        <div class="flex items-center mb-6">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150&q=80" 
+               alt="Michael Chen" class="w-16 h-16 rounded-full object-cover mr-4">
+          <div>
+            <h4 class="font-semibold text-gray-800">Michael Chen</h4>
+            <p class="text-gray-600">Cat Dad</p>
+          </div>
+        </div>
+        <div class="flex mb-4">
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+        </div>
+        <p class="text-gray-700 leading-relaxed mb-4">
+          "Luna has brought so much joy to our home. Pet Connect made it easy to find the perfect match for our family. Highly recommend to anyone looking to adopt!"
+        </p>
+        <div class="flex items-center text-blue-600">
+          <i class="fas fa-paw mr-2"></i>
+          <span class="text-sm font-medium">Adopted Luna the Persian Cat</span>
+        </div>
+      </div>
+
+      <!-- Testimonial 3 -->
+      <div class="bg-white p-8 rounded-2xl shadow-lg card-hover">
+        <div class="flex items-center mb-6">
+          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150&q=80" 
+               alt="Emily Rodriguez" class="w-16 h-16 rounded-full object-cover mr-4">
+          <div>
+            <h4 class="font-semibold text-gray-800">Emily Rodriguez</h4>
+            <p class="text-gray-600">Pet Lover</p>
+          </div>
+        </div>
+        <div class="flex mb-4">
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+        </div>
+        <p class="text-gray-700 leading-relaxed mb-4">
+          "As a first-time pet owner, I was nervous about adoption. Pet Connect's support team guided me every step of the way. Buddy is now my best friend!"
+        </p>
+        <div class="flex items-center text-blue-600">
+          <i class="fas fa-paw mr-2"></i>
+          <span class="text-sm font-medium">Adopted Buddy the Beagle Mix</span>
+        </div>
+      </div>
+
+      <!-- Testimonial 4 -->
+      <div class="bg-white p-8 rounded-2xl shadow-lg card-hover">
+        <div class="flex items-center mb-6">
+          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150&q=80" 
+               alt="David Thompson" class="w-16 h-16 rounded-full object-cover mr-4">
+          <div>
+            <h4 class="font-semibold text-gray-800">David Thompson</h4>
+            <p class="text-gray-600">Family Man</p>
+          </div>
+        </div>
+        <div class="flex mb-4">
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+        </div>
+        <p class="text-gray-700 leading-relaxed mb-4">
+          "We wanted a family-friendly dog and Pet Connect helped us find Bella. She's amazing with our kids and has become an integral part of our family."
+        </p>
+        <div class="flex items-center text-blue-600">
+          <i class="fas fa-paw mr-2"></i>
+          <span class="text-sm font-medium">Adopted Bella the Labrador</span>
+        </div>
+      </div>
+
+      <!-- Testimonial 5 -->
+      <div class="bg-white p-8 rounded-2xl shadow-lg card-hover">
+        <div class="flex items-center mb-6">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150&q=80" 
+               alt="Jessica Williams" class="w-16 h-16 rounded-full object-cover mr-4">
+          <div>
+            <h4 class="font-semibold text-gray-800">Jessica Williams</h4>
+            <p class="text-gray-600">Senior Citizen</p>
+          </div>
+        </div>
+        <div class="flex mb-4">
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+        </div>
+        <p class="text-gray-700 leading-relaxed mb-4">
+          "At 68, I thought it might be too late to get a companion. Pet Connect matched me with Charlie, a gentle senior cat. We're perfect for each other!"
+        </p>
+        <div class="flex items-center text-blue-600">
+          <i class="fas fa-paw mr-2"></i>
+          <span class="text-sm font-medium">Adopted Charlie the Senior Cat</span>
+        </div>
+      </div>
+
+      <!-- Testimonial 6 -->
+      <div class="bg-white p-8 rounded-2xl shadow-lg card-hover">
+        <div class="flex items-center mb-6">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150&q=80" 
+               alt="Alex Martinez" class="w-16 h-16 rounded-full object-cover mr-4">
+          <div>
+            <h4 class="font-semibold text-gray-800">Alex Martinez</h4>
+            <p class="text-gray-600">Young Professional</p>
+          </div>
+        </div>
+        <div class="flex mb-4">
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+          <i class="fas fa-star text-yellow-400"></i>
+        </div>
+        <p class="text-gray-700 leading-relaxed mb-4">
+          "Living alone in the city, I needed a companion. Pet Connect's detailed profiles helped me find Milo, who fits perfectly with my lifestyle and schedule."
+        </p>
+        <div class="flex items-center text-blue-600">
+          <i class="fas fa-paw mr-2"></i>
+          <span class="text-sm font-medium">Adopted Milo the Tabby Cat</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="text-center mt-16">
+      <h3 class="text-2xl font-bold text-gray-800 mb-4">Ready to Write Your Own Success Story?</h3>
+      <p class="text-gray-600 mb-8">Join thousands of happy families who found their perfect companions</p>
+      <a href="find.html" class="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-blue-700 transition duration-300 inline-flex items-center">
+        <i class="fas fa-heart mr-2"></i>Start Your Journey
+      </a>
     </div>
   </div>
+</section>
+
+
+  <!-- Call to Action Section -->
+  <section class="py-20 gradient-bg">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-4xl font-bold text-white mb-6">Ready to Make a Difference?</h2>
+      <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+        Whether you're looking to adopt, help a stray find a home, or support our mission, every action counts.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="find.html" class="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition duration-300">
+          Start Adopting
+        </a>
+        <a href="donate.html" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition duration-300">
+          Donate Now
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!-- Footer -->
-  <footer class="bg-blue-600 text-white py-6">
-    <div class="container mx-auto text-center">
-      <p>&copy; 2025 PetConnect. All rights reserved.</p>
-      <div class="mt-2">
-        <a href="about.html" class="mx-2 hover:underline">About Us</a>
-        <a href="contact.html" class="mx-2 hover:underline">Contact</a>
-        <a href="donate.html" class="mx-2 hover:underline">Donate</a>
+  <footer class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="col-span-1 md:col-span-2">
+          <div class="flex items-center mb-6">
+            <i class="fas fa-paw text-blue-400 text-2xl mr-2"></i>
+            <span class="text-2xl font-bold">Pet Connect</span>
+          </div>
+          <p class="text-gray-400 mb-6 leading-relaxed">
+            Connecting loving hearts with furry souls. We believe every pet deserves a loving home and every family deserves the joy of a pet companion.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
+          <ul class="space-y-3">
+            <li><a href="find.html" class="text-gray-400 hover:text-white transition duration-300">Find a Pet</a></li>
+            <li><a href="list.html" class="text-gray-400 hover:text-white transition duration-300">List an Animal</a></li>
+            <li><a href="donate.html" class="text-gray-400 hover:text-white transition duration-300">Donate</a></li>
+            <li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-300">Contact Us</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Support</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Help Center</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Adoption Guide</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Pet Care Tips</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Emergency Care</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Pet Connect. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a>
+        </div>
       </div>
     </div>
   </footer>
 
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-2xl w-full max-w-md mx-4">
+      <h2 class="text-3xl font-bold mb-6 text-gray-800">Welcome Back</h2>
+      <form id="loginForm">
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Email</label>
+          <input type="email" id="email" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Password</label>
+          <input type="password" id="password" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">Login</button>
+        <button type="button" class="w-full mt-3 text-gray-600 hover:text-gray-800 transition duration-300" onclick="hideLoginModal()">Cancel</button>
+      </form>
+      <p class="mt-6 text-center text-gray-600">Don't have an account? <a href="#" onclick="showSignupModal()" class="text-blue-600 font-medium hover:underline">Sign up</a></p>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-2xl w-full max-w-md mx-4">
+      <h2 class="text-3xl font-bold mb-6 text-gray-800">Join Pet Connect</h2>
+      <form id="signupForm">
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Name</label>
+          <input type="text" id="signupName" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Email</label>
+          <input type="email" id="signupEmail" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Password</label>
+          <input type="password" id="signupPassword" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">Sign Up</button>
+        <button type="button" class="w-full mt-3 text-gray-600 hover:text-gray-800 transition duration-300" onclick="hideSignupModal()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
   <script src="js/script.js"></script>
+  <script>
+    // Enhanced featured animals display with blue theme
+    function displayFeaturedAnimals(animals) {
+      const container = document.getElementById('featuredAnimals');
+      if (!animals || animals.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-12">
+            <i class="fas fa-paw text-6xl text-gray-300 mb-4"></i>
+            <p class="text-gray-600 text-lg">No featured animals available at the moment.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = animals.slice(0, 3).map(animal => `
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+          <div class="relative">
+            <img src="${animal.image || 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'}" 
+                 alt="${animal.name}" class="w-full h-64 object-cover">
+            <div class="absolute top-4 left-4">
+              <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                ${animal.species}
+              </span>
+            </div>
+            <div class="absolute top-4 right-4">
+              <button class="bg-white bg-opacity-90 p-2 rounded-full hover:bg-opacity-100 transition duration-300">
+                <i class="fas fa-heart text-gray-400 hover:text-red-500"></i>
+              </button>
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">${animal.name}</h3>
+            <p class="text-gray-600 mb-2">
+              <i class="fas fa-map-marker-alt mr-2"></i>${animal.location}
+            </p>
+            <p class="text-gray-600 mb-4">
+              ${animal.age} • ${animal.gender} • ${animal.breed}
+            </p>
+            <p class="text-gray-700 mb-6 leading-relaxed">${animal.description?.substring(0, 100)}...</p>
+            <a href="adopt.html?id=${animal.id}" 
+               class="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300 inline-block text-center">
+              <i class="fas fa-heart mr-2"></i>Adopt ${animal.name}
+            </a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-button').addEventListener('click', function() {
+      // Add mobile menu functionality here
+    });
+
+    // Initialize chatbot
+    (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="CMiX5zo72qQPsnsTSlPqP";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+  </script>
 </body>
 </html>

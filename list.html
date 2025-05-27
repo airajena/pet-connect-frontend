@@ -3,125 +3,528 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PetConnect - List an Animal</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>List an Animal - Pet Connect</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .gradient-bg { 
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+      position: relative;
+    }
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .form-step { display: none; }
+    .form-step.active { display: block; }
+    .step-indicator { transition: all 0.3s ease; }
+    .step-indicator.completed { background-color: #10b981; }
+    .step-indicator.active { background-color: #3b82f6; }
+    .file-upload-area {
+      border: 2px dashed #d1d5db;
+      transition: all 0.3s ease;
+    }
+    .file-upload-area:hover {
+      border-color: #3b82f6;
+      background-color: #eff6ff;
+    }
+    .file-upload-area.dragover {
+      border-color: #3b82f6;
+      background-color: #dbeafe;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans">
-  <!-- Navigation Bar -->
-  <nav class="bg-blue-600 text-white p-4 sticky top-0 z-50">
-    <div class="container mx-auto flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-bold">PetConnect</a>
-      <div class="space-x-4">
-        <a href="index.html" class="hover:underline">Home</a>
-        <a href="find.html" class="hover:underline">Find a Pet</a>
-        <a href="adopt.html" class="hover:underline">Adopt a Pet</a>
-        <a href="list.html" class="hover:underline">List an Animal</a>
-        <a href="about.html" class="hover:underline">About Us</a>
-        <a href="contact.html" class="hover:underline">Contact Us</a>
-        <a href="donate.html" class="hover:underline">Donate</a>
-        <a href="profile.html" class="hover:underline hidden" id="profileLink">Profile</a>
-        <a href="#" class="hover:underline hidden" id="logoutLink" onclick="logout()">Logout</a>
-        <a href="#" class="hover:underline" id="loginLink" onclick="showLoginModal()">Login</a>
+<body class="bg-gray-50">
+  <!-- Navigation -->
+  <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-6">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center">
+          <i class="fas fa-paw text-blue-600 text-2xl mr-2"></i>
+          <a href="index.html" class="text-2xl font-bold text-gray-800">Pet Connect</a>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+  <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Home</a>
+  <a href="find.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Find a Pet</a>
+  <a href="list.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">List an Animal</a>
+  <a href="about.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">About</a>
+  <a href="donate.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Donate</a>
+  <a href="contact.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Contact</a>
+  <a href="profile.html" id="profileLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden">Profile</a>
+  <a href="#" id="logoutLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden" onclick="logout()">Logout</a>
+  <a href="#" id="loginLink" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300" onclick="showLoginModal()">Login</a>
+  <a href="admin.html" id="adminLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden">Admin</a>
+</div>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
 
-  <!-- List an Animal Section -->
-  <section class="container mx-auto py-12">
-    <h2 class="text-3xl font-bold text-center mb-8">List a Stray Animal</h2>
-    <form id="listAnimalForm" class="bg-white p-6 rounded-lg shadow-md">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label for="name" class="block text-sm font-medium">Name</label>
-          <input type="text" id="name" class="w-full p-2 border rounded" required>
-        </div>
-        <div>
-          <label for="species" class="block text-sm font-medium">Species</label>
-          <select id="species" class="w-full p-2 border rounded" required>
-            <option value="dog">Dog</option>
-            <option value="cat">Cat</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <div>
-          <label for="breed" class="block text-sm font-medium">Breed</label>
-          <input type="text" id="breed" class="w-full p-2 border rounded">
-        </div>
-        <div>
-          <label for="age" class="block text-sm font-medium">Age</label>
-          <input type="number" id="age" class="w-full p-2 border rounded">
-        </div>
-        <div>
-          <label for="gender" class="block text-sm font-medium">Gender</label>
-          <select id="gender" class="w-full p-2 border rounded">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="unknown">Unknown</option>
-          </select>
-        </div>
-        <div>
-          <label for="healthStatus" class="block text-sm font-medium">Health Status</label>
-          <input type="text" id="healthStatus" class="w-full p-2 border rounded">
-        </div>
+  <!-- Hero Section -->
+  <section class="gradient-bg py-16">
+    <div class="container mx-auto px-6 text-center">
+      <h1 class="text-4xl lg:text-5xl font-bold text-white mb-6">Help a Stray Find a Home</h1>
+      <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+        Found a stray animal that needs help? List them on our platform and help them find their forever family.
+      </p>
+      <div class="flex justify-center">
+        <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80" 
+             alt="Helping stray animals" class="rounded-2xl shadow-2xl max-w-md">
       </div>
-      <div class="mt-4">
-        <label for="description" class="block text-sm font-medium">Description</label>
-        <textarea id="description" class="w-full p-2 border rounded" rows="4"></textarea>
-      </div>
-      <div class="mt-4">
-        <label for="images" class="block text-sm font-medium">Images</label>
-        <input type="file" id="images" class="w-full p-2 border rounded" multiple accept="image/*">
-      </div>
-      <div class="mt-4">
-        <label for="location" class="block text-sm font-medium">Location (e.g., Delhi)</label>
-        <input type="text" id="location" class="w-full p-2 border rounded" required>
-      </div>
-      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700">List Animal</button>
-    </form>
+    </div>
   </section>
 
+  <!-- Progress Steps -->
+  <section class="py-8 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="flex justify-center">
+        <div class="flex items-center space-x-4">
+          <div class="flex items-center">
+            <div class="step-indicator active w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">1</div>
+            <span class="ml-2 text-sm font-medium text-gray-700">Basic Info</span>
+          </div>
+          <div class="w-16 h-1 bg-gray-200"></div>
+          <div class="flex items-center">
+            <div class="step-indicator w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-semibold">2</div>
+            <span class="ml-2 text-sm font-medium text-gray-500">Details</span>
+          </div>
+          <div class="w-16 h-1 bg-gray-200"></div>
+          <div class="flex items-center">
+            <div class="step-indicator w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-semibold">3</div>
+            <span class="ml-2 text-sm font-medium text-gray-500">Photos & Location</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <form id="listAnimalForm" class="p-8">
+            
+            <!-- Step 1: Basic Information -->
+            <div class="form-step active" id="step1">
+              <div class="text-center mb-8">
+                <i class="fas fa-paw text-4xl text-blue-600 mb-4"></i>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Basic Information</h2>
+                <p class="text-gray-600">Let's start with the basics about this animal</p>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="name" class="block text-gray-700 font-medium mb-2">
+                    <i class="fas fa-tag mr-2 text-blue-600"></i>Name
+                  </label>
+                  <input type="text" id="name" 
+                         class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" 
+                         placeholder="e.g., Buddy, Luna, or Unknown" required>
+                  <p class="text-sm text-gray-500 mt-1">Give them a name or write "Unknown" if unsure</p>
+                </div>
+
+                <div>
+                  <label for="species" class="block text-gray-700 font-medium mb-2">
+                    <i class="fas fa-paw mr-2 text-blue-600"></i>Species
+                  </label>
+                  <select id="species" 
+                          class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+                    <option value="">Select species</option>
+                    <option value="dog">🐕 Dog</option>
+                    <option value="cat">🐱 Cat</option>
+                    <option value="other">🐾 Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="breed" class="block text-gray-700 font-medium mb-2">
+                    <i class="fas fa-dna mr-2 text-blue-600"></i>Breed
+                  </label>
+                  <input type="text" id="breed" 
+                         class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" 
+                         placeholder="e.g., Golden Retriever, Persian, Mixed">
+                  <p class="text-sm text-gray-500 mt-1">Best guess is fine if you're not sure</p>
+                </div>
+
+                <div>
+                  <label for="age" class="block text-gray-700 font-medium mb-2">
+                    <i class="fas fa-birthday-cake mr-2 text-blue-600"></i>Approximate Age (months)
+                  </label>
+                  <input type="number" id="age" min="1" max="300"
+                         class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" 
+                         placeholder="e.g., 12 for 1 year old">
+                  <p class="text-sm text-gray-500 mt-1">Rough estimate is okay</p>
+                </div>
+              </div>
+
+              <div class="flex justify-end mt-8">
+                <button type="button" onclick="nextStep()" 
+                        class="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">
+                  Next Step <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 2: Details -->
+            <div class="form-step" id="step2">
+              <div class="text-center mb-8">
+                <i class="fas fa-heart text-4xl text-blue-600 mb-4"></i>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">More Details</h2>
+                <p class="text-gray-600">Help potential adopters know more about this animal</p>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <label for="gender" class="block text-gray-700 font-medium mb-2">
+                    <i class="fas fa-venus-mars mr-2 text-blue-600"></i>Gender
+                  </label>
+                  <select id="gender" 
+                          class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+                    <option value="">Select gender</option>
+                    <option value="male">♂️ Male</option>
+                    <option value="female">♀️ Female</option>
+                    <option value="unknown">❓ Unknown</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="healthStatus" class="block text-gray-700 font-medium mb-2">
+                    <i class="fas fa-heartbeat mr-2 text-blue-600"></i>Health Status
+                  </label>
+                  <input type="text" id="healthStatus" 
+                         class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" 
+                         placeholder="e.g., Healthy, Injured, Needs medical attention">
+                </div>
+              </div>
+
+              <div>
+                <label for="description" class="block text-gray-700 font-medium mb-2">
+                  <i class="fas fa-align-left mr-2 text-blue-600"></i>Description
+                </label>
+                <textarea id="description" rows="6"
+                          class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" 
+                          placeholder="Describe the animal's personality, behavior, special needs, or any other important information..."></textarea>
+                <p class="text-sm text-gray-500 mt-1">The more details you provide, the better we can help find the right home</p>
+              </div>
+
+              <div class="flex justify-between mt-8">
+                <button type="button" onclick="prevStep()" 
+                        class="bg-gray-200 text-gray-700 px-8 py-3 rounded-xl font-semibold hover:bg-gray-300 transition duration-300">
+                  <i class="fas fa-arrow-left mr-2"></i>Previous
+                </button>
+                <button type="button" onclick="nextStep()" 
+                        class="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">
+                  Next Step <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 3: Photos & Location -->
+            <div class="form-step" id="step3">
+              <div class="text-center mb-8">
+                <i class="fas fa-camera text-4xl text-blue-600 mb-4"></i>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Photos & Location</h2>
+                <p class="text-gray-600">Add photos and location to complete the listing</p>
+              </div>
+
+              <div class="mb-8">
+                <label class="block text-gray-700 font-medium mb-4">
+                  <i class="fas fa-images mr-2 text-blue-600"></i>Animal Photos
+                </label>
+                <div class="file-upload-area rounded-xl p-8 text-center cursor-pointer" onclick="document.getElementById('images').click()">
+                  <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                  <p class="text-lg font-medium text-gray-700 mb-2">Click to upload photos</p>
+                  <p class="text-sm text-gray-500 mb-4">or drag and drop images here</p>
+                  <p class="text-xs text-gray-400">PNG, JPG, GIF up to 10MB each</p>
+                </div>
+                <input type="file" id="images" class="hidden" multiple accept="image/*">
+                <div id="imagePreview" class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+                <p class="text-sm text-gray-500 mt-2">
+                  <i class="fas fa-info-circle mr-1"></i>
+                  Clear, well-lit photos help animals get adopted faster
+                </p>
+              </div>
+
+              <div class="mb-8">
+                <label for="location" class="block text-gray-700 font-medium mb-2">
+                  <i class="fas fa-map-marker-alt mr-2 text-blue-600"></i>Location
+                </label>
+                <input type="text" id="location" 
+                       class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" 
+                       placeholder="e.g., Delhi, Mumbai, Bangalore" required>
+                <p class="text-sm text-gray-500 mt-1">City or area where the animal was found</p>
+              </div>
+
+              <!-- Important Notice -->
+              <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8">
+                <div class="flex items-start">
+                  <i class="fas fa-info-circle text-blue-600 text-xl mr-3 mt-1"></i>
+                  <div>
+                    <h3 class="font-semibold text-blue-800 mb-2">Important Information</h3>
+                    <ul class="text-sm text-blue-700 space-y-1">
+                      <li>• All listings are reviewed before being published</li>
+                      <li>• We may contact you for additional information</li>
+                      <li>• False information may result in account suspension</li>
+                      <li>• You'll be notified when someone shows interest in adoption</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex justify-between">
+                <button type="button" onclick="prevStep()" 
+                        class="bg-gray-200 text-gray-700 px-8 py-3 rounded-xl font-semibold hover:bg-gray-300 transition duration-300">
+                  <i class="fas fa-arrow-left mr-2"></i>Previous
+                </button>
+                <button type="submit" 
+                        class="bg-green-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-green-700 transition duration-300">
+                  <i class="fas fa-check mr-2"></i>List Animal
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Success Stories -->
+        <div class="mt-16 text-center">
+          <h3 class="text-2xl font-bold text-gray-800 mb-8">Recent Success Stories</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-xl p-6 shadow-md">
+              <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" 
+                   alt="Success story" class="w-20 h-20 rounded-full mx-auto mb-4 object-cover">
+              <h4 class="font-semibold text-gray-800 mb-2">Max's Journey</h4>
+              <p class="text-sm text-gray-600">Listed as a stray, now living happily with the Johnson family</p>
+            </div>
+            <div class="bg-white rounded-xl p-6 shadow-md">
+              <img src="https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" 
+                   alt="Success story" class="w-20 h-20 rounded-full mx-auto mb-4 object-cover">
+              <h4 class="font-semibold text-gray-800 mb-2">Luna's New Life</h4>
+              <p class="text-sm text-gray-600">From the streets to a loving home in just 2 weeks</p>
+            </div>
+            <div class="bg-white rounded-xl p-6 shadow-md">
+              <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" 
+                   alt="Success story" class="w-20 h-20 rounded-full mx-auto mb-4 object-cover">
+              <h4 class="font-semibold text-gray-800 mb-2">Buddy's Recovery</h4>
+              <p class="text-sm text-gray-600">Rescued, treated, and adopted through our platform</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="col-span-1 md:col-span-2">
+          <div class="flex items-center mb-6">
+            <i class="fas fa-paw text-blue-400 text-2xl mr-2"></i>
+            <span class="text-2xl font-bold">Pet Connect</span>
+          </div>
+          <p class="text-gray-400 mb-6 leading-relaxed">
+            Connecting loving hearts with furry souls. We believe every pet deserves a loving home and every family deserves the joy of a pet companion.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
+          <ul class="space-y-3">
+            <li><a href="find.html" class="text-gray-400 hover:text-white transition duration-300">Find a Pet</a></li>
+            <li><a href="list.html" class="text-gray-400 hover:text-white transition duration-300">List an Animal</a></li>
+            <li><a href="donate.html" class="text-gray-400 hover:text-white transition duration-300">Donate</a></li>
+            <li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-300">Contact Us</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Support</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Help Center</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Adoption Guide</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Pet Care Tips</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Emergency Care</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Pet Connect. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
   <!-- Login Modal -->
-  <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-4">Login</h2>
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-2xl w-full max-w-md mx-4">
+      <h2 class="text-3xl font-bold mb-6 text-gray-800">Welcome Back</h2>
       <form id="loginForm">
-        <div class="mb-4">
-          <label for="email" class="block text-sm font-medium">Email</label>
-          <input type="email" id="email" class="w-full p-2 border rounded" required>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Email</label>
+          <input type="email" id="email" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
         </div>
-        <div class="mb-4">
-          <label for="password" class="block text-sm font-medium">Password</label>
-          <input type="password" id="password" class="w-full p-2 border rounded" required>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Password</label>
+          <input type="password" id="password" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
         </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Login</button>
-        <button type="button" class="ml-2 text-gray-600" onclick="hideLoginModal()">Cancel</button>
+        <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">Login</button>
+        <button type="button" class="w-full mt-3 text-gray-600 hover:text-gray-800 transition duration-300" onclick="hideLoginModal()">Cancel</button>
       </form>
-      <p class="mt-4">Don't have an account? <a href="#" onclick="showSignupModal()" class="text-blue-600">Sign Up</a></p>
+      <p class="mt-6 text-center text-gray-600">Don't have an account? <a href="#" onclick="showSignupModal()" class="text-blue-600 font-medium hover:underline">Sign up</a></p>
     </div>
   </div>
 
   <!-- Signup Modal -->
-  <div id="signupModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-4">Sign Up</h2>
+  <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-2xl w-full max-w-md mx-4">
+      <h2 class="text-3xl font-bold mb-6 text-gray-800">Join Pet Connect</h2>
       <form id="signupForm">
         <div class="mb-4">
-          <label for="signupName" class="block text-sm font-medium">Name</label>
-          <input type="text" id="signupName" class="w-full p-2 border rounded" required>
+          <label class="block text-gray-700 font-medium mb-2">Name</label>
+          <input type="text" id="signupName" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
         </div>
         <div class="mb-4">
-          <label for="signupEmail" class="block text-sm font-medium">Email</label>
-          <input type="email" id="signupEmail" class="w-full p-2 border rounded" required>
+          <label class="block text-gray-700 font-medium mb-2">Email</label>
+          <input type="email" id="signupEmail" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
         </div>
-        <div class="mb-4">
-          <label for="signupPassword" class="block text-sm font-medium">Password</label>
-          <input type="password" id="signupPassword" class="w-full p-2 border rounded" required>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Password</label>
+          <input type="password" id="signupPassword" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
         </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sign Up</button>
-        <button type="button" class="ml-2 text-gray-600" onclick="hideSignupModal()">Cancel</button>
+        <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">Sign Up</button>
+        <button type="button" class="w-full mt-3 text-gray-600 hover:text-gray-800 transition duration-300" onclick="hideSignupModal()">Cancel</button>
       </form>
     </div>
-    <script src="js/script.js"></script>
+  </div>
+
+  <script src="js/script.js"></script>
+  <script>
+    let currentStep = 1;
+    const totalSteps = 3;
+
+    function nextStep() {
+      if (currentStep < totalSteps) {
+        // Hide current step
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        
+        // Update step indicator
+        document.querySelectorAll('.step-indicator')[currentStep - 1].classList.remove('active');
+        document.querySelectorAll('.step-indicator')[currentStep - 1].classList.add('completed');
+        
+        // Show next step
+        currentStep++;
+        document.getElementById(`step${currentStep}`).classList.add('active');
+        document.querySelectorAll('.step-indicator')[currentStep - 1].classList.add('active');
+        
+        // Update progress bar
+        updateProgressBar();
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        // Hide current step
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        document.querySelectorAll('.step-indicator')[currentStep - 1].classList.remove('active');
+        
+        // Show previous step
+        currentStep--;
+        document.getElementById(`step${currentStep}`).classList.add('active');
+        document.querySelectorAll('.step-indicator')[currentStep - 1].classList.remove('completed');
+        document.querySelectorAll('.step-indicator')[currentStep - 1].classList.add('active');
+        
+        // Update progress bar
+        updateProgressBar();
+      }
+    }
+
+    function updateProgressBar() {
+      const progressBars = document.querySelectorAll('.w-16.h-1');
+      progressBars.forEach((bar, index) => {
+        if (index < currentStep - 1) {
+          bar.classList.remove('bg-gray-200');
+          bar.classList.add('bg-blue-600');
+        } else {
+          bar.classList.remove('bg-blue-600');
+          bar.classList.add('bg-gray-200');
+        }
+      });
+    }
+
+    // File upload handling
+    document.getElementById('images').addEventListener('change', function(e) {
+      const files = e.target.files;
+      const preview = document.getElementById('imagePreview');
+      preview.innerHTML = '';
+      
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          const div = document.createElement('div');
+          div.className = 'relative';
+          div.innerHTML = `
+            <img src="${e.target.result}" class="w-full h-24 object-cover rounded-lg">
+            <button type="button" onclick="this.parentElement.remove()" 
+                    class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
+              ×
+            </button>
+          `;
+          preview.appendChild(div);
+        };
+        
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Drag and drop functionality
+    const uploadArea = document.querySelector('.file-upload-area');
+    
+    uploadArea.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      this.classList.add('dragover');
+    });
+    
+    uploadArea.addEventListener('dragleave', function(e) {
+      e.preventDefault();
+      this.classList.remove('dragover');
+    });
+    
+    uploadArea.addEventListener('drop', function(e) {
+      e.preventDefault();
+      this.classList.remove('dragover');
+      
+      const files = e.dataTransfer.files;
+      document.getElementById('images').files = files;
+      document.getElementById('images').dispatchEvent(new Event('change'));
+    });
+  </script>
 </body>
 </html>

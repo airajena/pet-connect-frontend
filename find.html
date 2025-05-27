@@ -3,122 +3,620 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PetConnect - Find a Pet</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <title>Find a Pet - Pet Connect</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .gradient-bg { 
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+      position: relative;
+    }
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .filter-chip {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .filter-chip:hover {
+      transform: translateY(-2px);
+    }
+    .filter-chip.active {
+      background: linear-gradient(135deg, #3b82f6, #1e40af);
+      color: white;
+    }
+    .pet-card {
+      background: white;
+      border-radius: 1rem;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    .pet-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+      border-color: #3b82f6;
+    }
+    .heart-btn {
+      transition: all 0.3s ease;
+    }
+    .heart-btn:hover {
+      transform: scale(1.1);
+    }
+    .heart-btn.liked {
+      color: #ef4444;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans">
-  <!-- Navigation Bar -->
-  <nav class="bg-blue-600 text-white p-4 sticky top-0 z-50">
-    <div class="container mx-auto flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-bold">PetConnect</a>
-      <div class="space-x-4">
-        <a href="index.html" class="hover:underline">Home</a>
-        <a href="find.html" class="hover:underline">Find a Pet</a>
-        <a href="adopt.html" class="hover:underline">Adopt a Pet</a>
-        <a href="list.html" class="hover:underline">List an Animal</a>
-        <a href="about.html" class="hover:underline">About Us</a>
-        <a href="contact.html" class="hover:underline">Contact Us</a>
-        <a href="donate.html" class="hover:underline">Donate</a>
-        <a href="profile.html" class="hover:underline hidden" id="profileLink">Profile</a>
-        <a href="#" class="hover:underline hidden" id="logoutLink" onclick="logout()">Logout</a>
-        <a href="#" class="hover:underline" id="loginLink" onclick="showLoginModal()">Login</a>
+<body class="bg-gray-50">
+  <!-- Navigation -->
+  <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-6">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center">
+          <i class="fas fa-paw text-blue-600 text-2xl mr-2"></i>
+          <a href="index.html" class="text-2xl font-bold text-gray-800">Pet Connect</a>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+  <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Home</a>
+  <a href="find.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Find a Pet</a>
+  <a href="list.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">List an Animal</a>
+  <a href="about.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">About</a>
+  <a href="donate.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Donate</a>
+  <a href="contact.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Contact</a>
+  <a href="profile.html" id="profileLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden">Profile</a>
+  <a href="#" id="logoutLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden" onclick="logout()">Logout</a>
+  <a href="#" id="loginLink" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300" onclick="showLoginModal()">Login</a>
+  <a href="admin.html" id="adminLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden">Admin</a>
+</div>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
 
-  <!-- Find a Pet Section -->
-  <section class="container mx-auto py-12">
-    <h2 class="text-3xl font-bold text-center mb-8">Find Your Perfect Pet</h2>
-    <form id="searchForm" class="mb-8 bg-white p-6 rounded-lg shadow-md">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <label for="species" class="block text-sm font-medium">Species</label>
-          <select id="species" class="w-full p-2 border rounded">
-            <option value="">All</option>
-            <option value="dog">Dog</option>
-            <option value="cat">Cat</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <div>
-          <label for="age" class="block text-sm font-medium">Max Age</label>
-          <input type="number" id="age" class="w-full p-2 border rounded" placeholder="e.g., 5">
-        </div>
-        <div>
-          <label for="gender" class="block text-sm font-medium">Gender</label>
-          <select id="gender" class="w-full p-2 border rounded">
-            <option value="">All</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="unknown">Unknown</option>
-          </select>
-        </div>
+  <!-- Hero Section -->
+  <section class="gradient-bg py-16">
+    <div class="container mx-auto px-6 text-center">
+      <h1 class="text-4xl lg:text-5xl font-bold text-white mb-6">Find Your Perfect Companion</h1>
+      <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+        Browse through our amazing pets waiting for their forever homes. Use filters to find the perfect match for your family.
+      </p>
+      <div class="flex justify-center">
+        <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80" 
+             alt="Happy pets" class="rounded-2xl shadow-2xl max-w-md">
       </div>
-      <div class="mt-4">
-        <label for="location" class="block text-sm font-medium">Location (e.g., Delhi)</label>
-        <input type="text" id="location" class="w-full p-2 border rounded" placeholder="Enter city or address">
-      </div>
-      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700">Search</button>
-    </form>
-    <div id="animalList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
   </section>
 
-  <!-- Login Modal -->
-  <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-4">Login</h2>
-      <form id="loginForm">
-        <div class="mb-4">
-          <label for="email" class="block text-sm font-medium">Email</label>
-          <input type="email" id="email" class="w-full p-2 border rounded" required>
+  <!-- Quick Filters -->
+  <section class="py-8 bg-white border-b">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-wrap justify-center gap-4 mb-6">
+        <div class="filter-chip active bg-blue-600 text-white px-6 py-3 rounded-full font-semibold" onclick="quickFilter('all')">
+          <i class="fas fa-paw mr-2"></i>All Pets
         </div>
-        <div class="mb-4">
-          <label for="password" class="block text-sm font-medium">Password</label>
-          <input type="password" id="password" class="w-full p-2 border rounded" required>
+        <div class="filter-chip bg-gray-100 text-gray-700 px-6 py-3 rounded-full font-semibold" onclick="quickFilter('dog')">
+          <i class="fas fa-dog mr-2"></i>Dogs
         </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Login</button>
-        <button type="button" class="ml-2 text-gray-600" onclick="hideLoginModal()">Cancel</button>
-      </form>
-      <p class="mt-4">Don't have an account? <a href="#" onclick="showSignupModal()" class="text-blue-600">Sign Up</a></p>
+        <div class="filter-chip bg-gray-100 text-gray-700 px-6 py-3 rounded-full font-semibold" onclick="quickFilter('cat')">
+          <i class="fas fa-cat mr-2"></i>Cats
+        </div>
+        <div class="filter-chip bg-gray-100 text-gray-700 px-6 py-3 rounded-full font-semibold" onclick="quickFilter('young')">
+          <i class="fas fa-baby mr-2"></i>Young (< 12 months)
+        </div>
+        <div class="filter-chip bg-gray-100 text-gray-700 px-6 py-3 rounded-full font-semibold" onclick="quickFilter('senior')">
+          <i class="fas fa-heart mr-2"></i>Senior (> 60 months)
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Signup Modal -->
-  <div id="signupModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-4">Sign Up</h2>
-      <form id="signupForm">
-        <div class="mb-4">
-          <label for="signupName" class="block text-sm font-medium">Name</label>
-          <input type="text" id="signupName" class="w-full p-2 border rounded" required>
+  <!-- Search and Filter Section -->
+  <section class="py-8 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <div class="max-w-6xl mx-auto">
+        <!-- Advanced Search Form -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">
+              <i class="fas fa-search mr-2 text-blue-600"></i>Search & Filter
+            </h2>
+            <button onclick="toggleAdvancedSearch()" id="advancedToggle" 
+                    class="text-blue-600 hover:text-blue-700 font-medium">
+              <i class="fas fa-sliders-h mr-2"></i>Advanced Filters
+            </button>
+          </div>
+          
+          <form id="searchForm" class="space-y-6">
+            <!-- Basic Search -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label class="block text-gray-700 font-medium mb-2">
+                  <i class="fas fa-paw mr-2 text-blue-600"></i>Species
+                </label>
+                <select id="species" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+                  <option value="">All Species</option>
+                  <option value="dog">🐕 Dog</option>
+                  <option value="cat">🐱 Cat</option>
+                  <option value="other">🐾 Other</option>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-gray-700 font-medium mb-2">
+                  <i class="fas fa-venus-mars mr-2 text-blue-600"></i>Gender
+                </label>
+                <select id="gender" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+                  <option value="">Any Gender</option>
+                  <option value="male">♂️ Male</option>
+                  <option value="female">♀️ Female</option>
+                  <option value="unknown">❓ Unknown</option>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-gray-700 font-medium mb-2">
+                  <i class="fas fa-birthday-cake mr-2 text-blue-600"></i>Age Range
+                </label>
+                <select id="ageRange" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+                  <option value="">Any Age</option>
+                  <option value="0-12">Puppy/Kitten (0-12 months)</option>
+                  <option value="13-36">Young (1-3 years)</option>
+                  <option value="37-84">Adult (3-7 years)</option>
+                  <option value="85-999">Senior (7+ years)</option>
+                </select>
+              </div>
+            </div>
+            
+
+            <!-- Advanced Filters (Hidden by default) -->
+            <div id="advancedFilters" class="hidden">
+              <div class="border-t pt-6 mt-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Advanced Options</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label class="block text-gray-700 font-medium mb-2">
+                      <i class="fas fa-dna mr-2 text-blue-600"></i>Breed
+                    </label>
+                    <input type="text" id="breed" 
+                           class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" 
+                           placeholder="e.g., Golden Retriever, Persian">
+                  </div>
+                  
+                  <div>
+                    <label class="block text-gray-700 font-medium mb-2">
+                      <i class="fas fa-heartbeat mr-2 text-blue-600"></i>Health Status
+                    </label>
+                    <select id="healthStatus" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+                      <option value="">Any Health Status</option>
+                      <option value="healthy">Healthy</option>
+                      <option value="special needs">Special Needs</option>
+                      <option value="recovering">Recovering</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4">
+              <button type="submit" 
+                      class="flex-1 bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">
+                <i class="fas fa-search mr-2"></i>Search Pets
+              </button>
+              <button type="button" onclick="clearFilters()" 
+                      class="bg-gray-200 text-gray-700 py-4 px-8 rounded-xl font-semibold hover:bg-gray-300 transition duration-300">
+                <i class="fas fa-times mr-2"></i>Clear
+              </button>
+            </div>
+          </form>
         </div>
-        <div class="mb-4">
-          <label for="signupEmail" class="block text-sm font-medium">Email</label>
-          <input type="email" id="signupEmail" class="w-full p-2 border rounded" required>
+
+        <!-- Results Header -->
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h3 class="text-2xl font-bold text-gray-800">Available Pets</h3>
+            <p id="resultsCount" class="text-gray-600">Loading amazing pets...</p>
+          </div>
+          <div class="flex items-center space-x-4">
+            <label class="text-gray-700 font-medium">Sort by:</label>
+            <select id="sortBy" onchange="sortAnimals()" 
+                    class="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="name">Name A-Z</option>
+              <option value="age-young">Age: Young First</option>
+              <option value="age-old">Age: Old First</option>
+            </select>
+          </div>
         </div>
-        <div class="mb-4">
-          <label for="signupPassword" class="block text-sm font-medium">Password</label>
-          <input type="password" id="signupPassword" class="w-full p-2 border rounded" required>
+
+        <!-- Pet Cards Grid -->
+        <div id="animalList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Loading State -->
+          <div class="col-span-full text-center py-12">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+            <p class="text-gray-600 text-lg">Finding amazing pets for you...</p>
+          </div>
         </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sign Up</button>
-        <button type="button" class="ml-2 text-gray-600" onclick="hideSignupModal()">Cancel</button>
-      </form>
+
+        <!-- Load More Button -->
+        <div class="text-center mt-12">
+          <button id="loadMoreBtn" onclick="loadMorePets()" 
+                  class="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300 hidden">
+            <i class="fas fa-plus mr-2"></i>Load More Pets
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
   <!-- Footer -->
-  <footer class="bg-blue-600 text-white py-6">
-    <div class="container mx-auto text-center">
-      <p>© 2025 PetConnect. All rights reserved.</p>
-      <div class="mt-2">
-        <a href="about.html" class="mx-2 hover:underline">About Us</a>
-        <a href="contact.html" class="mx-2 hover:underline">Contact</a>
-        <a href="donate.html" class="mx-2 hover:underline">Donate</a>
+  <footer class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="col-span-1 md:col-span-2">
+          <div class="flex items-center mb-6">
+            <i class="fas fa-paw text-blue-400 text-2xl mr-2"></i>
+            <span class="text-2xl font-bold">Pet Connect</span>
+          </div>
+          <p class="text-gray-400 mb-6 leading-relaxed">
+            Connecting loving hearts with furry souls. We believe every pet deserves a loving home and every family deserves the joy of a pet companion.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
+          <ul class="space-y-3">
+            <li><a href="find.html" class="text-gray-400 hover:text-white transition duration-300">Find a Pet</a></li>
+            <li><a href="list.html" class="text-gray-400 hover:text-white transition duration-300">List an Animal</a></li>
+            <li><a href="donate.html" class="text-gray-400 hover:text-white transition duration-300">Donate</a></li>
+            <li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-300">Contact Us</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Support</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Help Center</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Adoption Guide</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Pet Care Tips</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Emergency Care</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Pet Connect. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a>
+        </div>
       </div>
     </div>
   </footer>
 
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-2xl w-full max-w-md mx-4">
+      <h2 class="text-3xl font-bold mb-6 text-gray-800">Welcome Back</h2>
+      <form id="loginForm">
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Email</label>
+          <input type="email" id="email" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Password</label>
+          <input type="password" id="password" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">Login</button>
+        <button type="button" class="w-full mt-3 text-gray-600 hover:text-gray-800 transition duration-300" onclick="hideLoginModal()">Cancel</button>
+      </form>
+      <p class="mt-6 text-center text-gray-600">Don't have an account? <a href="#" onclick="showSignupModal()" class="text-blue-600 font-medium hover:underline">Sign up</a></p>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-2xl w-full max-w-md mx-4">
+      <h2 class="text-3xl font-bold mb-6 text-gray-800">Join Pet Connect</h2>
+      <form id="signupForm">
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Name</label>
+          <input type="text" id="signupName" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Email</label>
+          <input type="email" id="signupEmail" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Password</label>
+          <input type="password" id="signupPassword" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">Sign Up</button>
+        <button type="button" class="w-full mt-3 text-gray-600 hover:text-gray-800 transition duration-300" onclick="hideSignupModal()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
   <script src="js/script.js"></script>
+  <script>
+    let allAnimals = [];
+    let filteredAnimals = [];
+    let currentPage = 1;
+    const itemsPerPage = 9;
+
+    // Enhanced displayAnimals function with beautiful cards
+    function displayAnimals(animals) {
+      const container = document.getElementById('animalList');
+      const resultsCount = document.getElementById('resultsCount');
+      
+      if (animals.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-16">
+            <i class="fas fa-search text-6xl text-gray-300 mb-6"></i>
+            <h3 class="text-2xl font-bold text-gray-600 mb-4">No pets found</h3>
+            <p class="text-gray-500 mb-8">Try adjusting your search filters to find more pets</p>
+            <button onclick="clearFilters()" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">
+              Clear Filters
+            </button>
+          </div>
+        `;
+        resultsCount.textContent = 'No pets found';
+        return;
+      }
+
+      resultsCount.textContent = `Found ${animals.length} amazing pet${animals.length !== 1 ? 's' : ''}`;
+      
+      container.innerHTML = animals.map(animal => {
+        const age = animal.age ? `${Math.floor(animal.age / 12)} years ${animal.age % 12} months` : 'Unknown';
+        const location = animal.location || 'Location not specified';
+        
+        return `
+          <div class="pet-card card-hover">
+            <div class="relative">
+              <img src="${animal.image || 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'}" 
+                   alt="${animal.name}" class="w-full h-64 object-cover">
+              
+              <!-- Status Badge -->
+              <div class="absolute top-4 left-4">
+                <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
+                  Available
+                </span>
+              </div>
+              
+              <!-- Heart Button -->
+              <button onclick="toggleFavorite('${animal._id}')" 
+                      class="heart-btn absolute top-4 right-4 bg-white bg-opacity-90 p-3 rounded-full shadow-lg hover:bg-opacity-100">
+                <i class="fas fa-heart text-gray-400 text-lg"></i>
+              </button>
+              
+              <!-- Species Icon -->
+              <div class="absolute bottom-4 left-4 bg-white bg-opacity-90 px-3 py-1 rounded-full">
+                <span class="text-sm font-semibold text-gray-700">
+                  ${animal.species === 'dog' ? '🐕' : animal.species === 'cat' ? '🐱' : '🐾'} ${animal.species.charAt(0).toUpperCase() + animal.species.slice(1)}
+                </span>
+              </div>
+            </div>
+            
+            <div class="p-6">
+              <div class="flex items-start justify-between mb-3">
+                <h3 class="text-2xl font-bold text-gray-800">${animal.name}</h3>
+                <span class="text-sm font-medium text-gray-500">${animal.gender || 'Unknown'}</span>
+              </div>
+              
+              <div class="space-y-2 mb-4">
+                <div class="flex items-center text-gray-600">
+                  <i class="fas fa-birthday-cake mr-2 text-blue-600"></i>
+                  <span>${age}</span>
+                </div>
+                <div class="flex items-center text-gray-600">
+                  <i class="fas fa-map-marker-alt mr-2 text-blue-600"></i>
+                  <span>${location}</span>
+                </div>
+                ${animal.breed ? `
+                <div class="flex items-center text-gray-600">
+                  <i class="fas fa-dna mr-2 text-blue-600"></i>
+                  <span>${animal.breed}</span>
+                </div>
+                ` : ''}
+                ${animal.healthStatus ? `
+                <div class="flex items-center text-gray-600">
+                  <i class="fas fa-heartbeat mr-2 text-blue-600"></i>
+                  <span>${animal.healthStatus}</span>
+                </div>
+                ` : ''}
+              </div>
+              
+              <p class="text-gray-700 mb-6 leading-relaxed line-clamp-3">
+                ${animal.description ? animal.description.substring(0, 120) + '...' : 'A wonderful pet looking for a loving home.'}
+              </p>
+              
+              <div class="flex space-x-3">
+                <a href="adopt.html?id=${animal._id}" 
+                   class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300 text-center">
+                  <i class="fas fa-heart mr-2"></i>Adopt ${animal.name}
+                </a>
+                <button onclick="viewDetails('${animal._id}')" 
+                        class="bg-gray-100 text-gray-700 px-4 py-3 rounded-xl hover:bg-gray-200 transition duration-300">
+                  <i class="fas fa-info-circle"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Quick filter functions
+    function quickFilter(type) {
+      // Update active filter chip
+      document.querySelectorAll('.filter-chip').forEach(chip => {
+        chip.classList.remove('active', 'bg-blue-600', 'text-white');
+        chip.classList.add('bg-gray-100', 'text-gray-700');
+      });
+      
+      event.target.classList.add('active', 'bg-blue-600', 'text-white');
+      event.target.classList.remove('bg-gray-100', 'text-gray-700');
+      
+      // Apply filter
+      let filtered = allAnimals;
+      
+      switch(type) {
+        case 'dog':
+          filtered = allAnimals.filter(animal => animal.species.toLowerCase() === 'dog');
+          break;
+        case 'cat':
+          filtered = allAnimals.filter(animal => animal.species.toLowerCase() === 'cat');
+          break;
+        case 'young':
+          filtered = allAnimals.filter(animal => animal.age && animal.age < 12);
+          break;
+        case 'senior':
+          filtered = allAnimals.filter(animal => animal.age && animal.age > 60);
+          break;
+        default:
+          filtered = allAnimals;
+      }
+      
+      filteredAnimals = filtered;
+      displayAnimals(filtered);
+    }
+
+    // Toggle advanced search
+    function toggleAdvancedSearch() {
+      const advancedFilters = document.getElementById('advancedFilters');
+      const toggleBtn = document.getElementById('advancedToggle');
+      
+      if (advancedFilters.classList.contains('hidden')) {
+        advancedFilters.classList.remove('hidden');
+        toggleBtn.innerHTML = '<i class="fas fa-chevron-up mr-2"></i>Hide Advanced';
+      } else {
+        advancedFilters.classList.add('hidden');
+        toggleBtn.innerHTML = '<i class="fas fa-sliders-h mr-2"></i>Advanced Filters';
+      }
+    }
+
+    // Clear all filters
+    function clearFilters() {
+      document.getElementById('searchForm').reset();
+      
+      // Reset quick filter chips
+      document.querySelectorAll('.filter-chip').forEach((chip, index) => {
+        chip.classList.remove('active', 'bg-blue-600', 'text-white');
+        chip.classList.add('bg-gray-100', 'text-gray-700');
+        if (index === 0) {
+          chip.classList.add('active', 'bg-blue-600', 'text-white');
+          chip.classList.remove('bg-gray-100', 'text-gray-700');
+        }
+      });
+      
+      filteredAnimals = allAnimals;
+      displayAnimals(allAnimals);
+    }
+
+    // Sort animals
+    function sortAnimals() {
+      const sortBy = document.getElementById('sortBy').value;
+      let sorted = [...filteredAnimals];
+      
+      switch(sortBy) {
+        case 'newest':
+          sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          break;
+        case 'oldest':
+          sorted.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+          break;
+        case 'name':
+          sorted.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+        case 'age-young':
+          sorted.sort((a, b) => (a.age || 0) - (b.age || 0));
+          break;
+        case 'age-old':
+          sorted.sort((a, b) => (b.age || 0) - (a.age || 0));
+          break;
+      }
+      
+      displayAnimals(sorted);
+    }
+
+    // Toggle favorite
+    function toggleFavorite(animalId) {
+      const heartBtn = event.target;
+      heartBtn.classList.toggle('liked');
+      
+      if (heartBtn.classList.contains('liked')) {
+        heartBtn.style.color = '#ef4444';
+        // Add to favorites logic here
+      } else {
+        heartBtn.style.color = '#9ca3af';
+        // Remove from favorites logic here
+      }
+    }
+
+    // View details modal (you can implement this)
+    function viewDetails(animalId) {
+      // Implement pet details modal
+      console.log('View details for animal:', animalId);
+    }
+
+    // Enhanced search form submission
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const species = document.getElementById('species').value.toLowerCase();
+      const gender = document.getElementById('gender').value.toLowerCase();
+      const ageRange = document.getElementById('ageRange').value;
+      const breed = document.getElementById('breed').value.toLowerCase();
+      const healthStatus = document.getElementById('healthStatus').value.toLowerCase();
+      
+      let filtered = allAnimals.filter(animal => {
+        const matchSpecies = !species || animal.species.toLowerCase().includes(species);
+        const matchGender = !gender || animal.gender.toLowerCase() === gender;
+        const matchBreed = !breed || (animal.breed && animal.breed.toLowerCase().includes(breed));
+        const matchHealth = !healthStatus || (animal.healthStatus && animal.healthStatus.toLowerCase().includes(healthStatus));
+        
+        let matchAge = true;
+        if (ageRange) {
+          const [min, max] = ageRange.split('-').map(Number);
+          const animalAge = animal.age || 0;
+          matchAge = animalAge >= min && animalAge <= max;
+        }
+        
+        return matchSpecies && matchGender && matchAge && matchBreed && matchHealth;
+      });
+      
+      filteredAnimals = filtered;
+      displayAnimals(filtered);
+    });
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Your existing fetchAnimals function will populate allAnimals
+      // Then call displayAnimals(allAnimals) to show them
+    });
+  </script>
 </body>
 </html>

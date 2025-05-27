@@ -3,110 +3,455 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PetConnect - Contact Us</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <title>Contact Us - Pet Connect</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .gradient-bg { 
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+      position: relative;
+    }
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .contact-card:hover { transform: translateY(-5px); }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans">
-  <!-- Navigation Bar -->
-  <nav class="bg-blue-600 text-white p-4 sticky top-0 z-50">
-    <div class="container mx-auto flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-bold">PetConnect</a>
-      <div class="space-x-4">
-        <a href="index.html" class="hover:underline">Home</a>
-        <a href="find.html" class="hover:underline">Find a Pet</a>
-        <a href="adopt.html" class="hover:underline">Adopt a Pet</a>
-        <a href="list.html" class="hover:underline">List an Animal</a>
-        <a href="about.html" class="hover:underline">About Us</a>
-        <a href="contact.html" class="hover:underline">Contact Us</a>
-        <a href="donate.html" class="hover:underline">Donate</a>
-        <a href="profile.html" class="hover:underline hidden" id="profileLink">Profile</a>
-        <a href="#" class="hover:underline hidden" id="logoutLink" onclick="logout()">Logout</a>
-        <a href="#" class="hover:underline" id="loginLink" onclick="showLoginModal()">Login</a>
+<body class="bg-gray-50">
+  <!-- Navigation -->
+  <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-6">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center">
+          <i class="fas fa-paw text-blue-600 text-2xl mr-2"></i>
+          <a href="index.html" class="text-2xl font-bold text-gray-800">Pet Connect</a>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+  <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Home</a>
+  <a href="find.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Find a Pet</a>
+  <a href="list.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">List an Animal</a>
+  <a href="about.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">About</a>
+  <a href="donate.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Donate</a>
+  <a href="contact.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Contact</a>
+  <a href="profile.html" id="profileLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden">Profile</a>
+  <a href="#" id="logoutLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden" onclick="logout()">Logout</a>
+  <a href="#" id="loginLink" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300" onclick="showLoginModal()">Login</a>
+  <a href="admin.html" id="adminLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden">Admin</a>
+</div>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
 
-  <!-- Contact Us Section -->
-  <section class="container mx-auto py-12">
-    <h2 class="text-3xl font-bold text-center mb-8">Contact Us</h2>
-    <div class="bg-white p-6 rounded-lg shadow-md">
-      <p class="text-lg mb-4">Email: contact@petconnect.in</p>
-      <p class="text-lg mb-4">Phone: +91-98765-43210</p>
-      <p class="text-lg mb-4">Address: 123 Connaught Place, New Delhi, India</p>
-      <form id="contactForm" class="mt-4">
-        <div class="mb-4">
-          <label for="contactName" class="block text-sm font-medium">Name</label>
-          <input type="text" id="contactName" class="w-full p-2 border rounded" required>
-        </div>
-        <div class="mb-4">
-          <label for="contactEmail" class="block text-sm font-medium">Email</label>
-          <input type="email" id="contactEmail" class="w-full p-2 border rounded" required>
-        </div>
-        <div class="mb-4">
-          <label for="message" class="block text-sm font-medium">Message</label>
-          <textarea id="message" class="w-full p-2 border rounded" rows="4" required></textarea>
-        </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Send Message</button>
-      </form>
+  <!-- Hero Section -->
+  <section class="gradient-bg py-20">
+    <div class="container mx-auto px-6 text-center">
+      <h1 class="text-5xl font-bold text-white mb-6">Get in Touch</h1>
+      <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+        Have questions about adoption, need help with our services, or want to share your story? We'd love to hear from you!
+      </p>
+      <div class="flex justify-center">
+        <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" 
+             alt="Happy pets and family" class="rounded-2xl shadow-2xl max-w-md">
+      </div>
     </div>
   </section>
 
-  <!-- Login Modal -->
-  <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-4">Login</h2>
-      <form id="loginForm">
-        <div class="mb-4">
-          <label for="email" class="block text-sm font-medium">Email</label>
-          <input type="email" id="email" class="w-full p-2 border rounded" required>
+  <!-- Contact Information Cards -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <!-- Phone Card -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 text-center contact-card transition-all duration-300 border-2 border-gray-100 hover:border-blue-300">
+          <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-phone text-2xl text-blue-600"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-4">Call Us</h3>
+          <p class="text-gray-600 mb-4">Speak directly with our team</p>
+          <a href="tel:+919876543210" class="text-blue-600 font-semibold hover:underline text-lg">
+            +91-98765-43210
+          </a>
+          <p class="text-sm text-gray-500 mt-2">Mon-Sat: 9AM-6PM</p>
         </div>
-        <div class="mb-4">
-          <label for="password" class="block text-sm font-medium">Password</label>
-          <input type="password" id="password" class="w-full p-2 border rounded" required>
-        </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Login</button>
-        <button type="button" class="ml-2 text-gray-600" onclick="hideLoginModal()">Cancel</button>
-      </form>
-      <p class="mt-4">Don't have an account? <a href="#" onclick="showSignupModal()" class="text-blue-600">Sign Up</a></p>
-    </div>
-  </div>
 
-  <!-- Signup Modal -->
-  <div id="signupModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-4">Sign Up</h2>
-      <form id="signupForm">
-        <div class="mb-4">
-          <label for="signupName" class="block text-sm font-medium">Name</label>
-          <input type="text" id="signupName" class="w-full p-2 border rounded" required>
+        <!-- Email Card -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 text-center contact-card transition-all duration-300 border-2 border-gray-100 hover:border-blue-300">
+          <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-envelope text-2xl text-blue-600"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-4">Email Us</h3>
+          <p class="text-gray-600 mb-4">Send us a detailed message</p>
+          <a href="mailto:contact@petconnect.in" class="text-blue-600 font-semibold hover:underline text-lg">
+            contact@petconnect.in
+          </a>
+          <p class="text-sm text-gray-500 mt-2">We reply within 24 hours</p>
         </div>
-        <div class="mb-4">
-          <label for="signupEmail" class="block text-sm font-medium">Email</label>
-          <input type="email" id="signupEmail" class="w-full p-2 border rounded" required>
+
+        <!-- Location Card -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 text-center contact-card transition-all duration-300 border-2 border-gray-100 hover:border-blue-300">
+          <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-map-marker-alt text-2xl text-blue-600"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-4">Visit Us</h3>
+          <p class="text-gray-600 mb-4">Come see our facility</p>
+          <address class="text-blue-600 font-semibold not-italic">
+            123 Connaught Place<br>
+            New Delhi, India 110001
+          </address>
+          <p class="text-sm text-gray-500 mt-2">Open for visits by appointment</p>
         </div>
-        <div class="mb-4">
-          <label for="signupPassword" class="block text-sm font-medium">Password</label>
-          <input type="password" id="signupPassword" class="w-full p-2 border rounded" required>
-        </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sign Up</button>
-        <button type="button" class="ml-2 text-gray-600" onclick="hideSignupModal()">Cancel</button>
-      </form>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <!-- Contact Form Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold text-gray-800 mb-4">Send Us a Message</h2>
+          <p class="text-xl text-gray-600">Fill out the form below and we'll get back to you as soon as possible</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <!-- Contact Form -->
+          <div class="bg-white rounded-2xl shadow-lg p-8">
+            <form id="contactForm" class="space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="firstName" class="block text-gray-700 font-medium mb-2">First Name *</label>
+                  <input type="text" id="firstName" name="firstName" required
+                         class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+                </div>
+                <div>
+                  <label for="lastName" class="block text-gray-700 font-medium mb-2">Last Name *</label>
+                  <input type="text" id="lastName" name="lastName" required
+                         class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+                </div>
+              </div>
+
+              <div>
+                <label for="email" class="block text-gray-700 font-medium mb-2">Email Address *</label>
+                <input type="email" id="email" name="email" required
+                       class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+              </div>
+
+              <div>
+                <label for="phone" class="block text-gray-700 font-medium mb-2">Phone Number</label>
+                <input type="tel" id="phone" name="phone"
+                       class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+              </div>
+
+              <div>
+                <label for="subject" class="block text-gray-700 font-medium mb-2">Subject *</label>
+                <select id="subject" name="subject" required
+                        class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+                  <option value="">Select a subject</option>
+                  <option value="adoption">Pet Adoption Inquiry</option>
+                  <option value="listing">List an Animal</option>
+                  <option value="donation">Donation Questions</option>
+                  <option value="volunteer">Volunteer Opportunities</option>
+                  <option value="support">Technical Support</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="message" class="block text-gray-700 font-medium mb-2">Message *</label>
+                <textarea id="message" name="message" rows="6" required
+                          class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                          placeholder="Tell us how we can help you..."></textarea>
+              </div>
+
+              <button type="submit" id="submitBtn"
+                      class="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300 flex items-center justify-center">
+                <i class="fas fa-paper-plane mr-2"></i>
+                <span id="btnText">Send Message</span>
+              </button>
+            </form>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="hidden mt-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-xl">
+              <div class="flex items-center">
+                <i class="fas fa-check-circle mr-2"></i>
+                <span>Thank you! Your message has been sent successfully. We'll get back to you soon.</span>
+              </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="hidden mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-xl">
+              <div class="flex items-center">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span>Sorry, there was an error sending your message. Please try again or contact us directly.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Additional Information -->
+          <div class="space-y-8">
+            <!-- FAQ Section -->
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+              <h3 class="text-2xl font-bold text-gray-800 mb-6">Frequently Asked Questions</h3>
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-gray-800 mb-2">How long does the adoption process take?</h4>
+                  <p class="text-gray-600 text-sm">Typically 3-7 days after application review and approval.</p>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-800 mb-2">Can I visit the animals before adopting?</h4>
+                  <p class="text-gray-600 text-sm">Yes! We encourage meet-and-greets by appointment.</p>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-800 mb-2">What documents do I need for adoption?</h4>
+                  <p class="text-gray-600 text-sm">Valid ID, proof of residence, and adoption application form.</p>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-800 mb-2">Do you provide post-adoption support?</h4>
+                  <p class="text-gray-600 text-sm">Yes, we offer ongoing support and guidance for new pet parents.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Office Hours -->
+            <div class="bg-blue-600 rounded-2xl shadow-lg p-8 text-white">
+              <h3 class="text-2xl font-bold mb-6">Office Hours</h3>
+              <div class="space-y-3">
+                <div class="flex justify-between">
+                  <span>Monday - Friday</span>
+                  <span class="font-semibold">9:00 AM - 6:00 PM</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Saturday</span>
+                  <span class="font-semibold">10:00 AM - 4:00 PM</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Sunday</span>
+                  <span class="font-semibold">Closed</span>
+                </div>
+              </div>
+              <div class="mt-6 p-4 bg-blue-500 rounded-xl">
+                <p class="text-sm">
+                  <i class="fas fa-info-circle mr-2"></i>
+                  Emergency pet rescues are handled 24/7. Call our emergency line for urgent situations.
+                </p>
+              </div>
+            </div>
+
+            <!-- Social Media -->
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+              <h3 class="text-2xl font-bold text-gray-800 mb-6">Follow Us</h3>
+              <p class="text-gray-600 mb-6">Stay updated with our latest rescues and success stories</p>
+              <div class="flex space-x-4">
+                <a href="#" class="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 transition duration-300">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="bg-blue-400 text-white p-3 rounded-full hover:bg-blue-500 transition duration-300">
+                  <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="bg-pink-600 text-white p-3 rounded-full hover:bg-pink-700 transition duration-300">
+                  <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="bg-red-600 text-white p-3 rounded-full hover:bg-red-700 transition duration-300">
+                  <i class="fab fa-youtube"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold text-gray-800 mb-4">Find Us</h2>
+        <p class="text-xl text-gray-600">Located in the heart of New Delhi</p>
+      </div>
+      <div class="bg-gray-200 rounded-2xl h-96 flex items-center justify-center">
+        <div class="text-center">
+          <i class="fas fa-map-marked-alt text-6xl text-gray-400 mb-4"></i>
+          <p class="text-gray-600">Interactive map will be integrated here</p>
+          <p class="text-sm text-gray-500 mt-2">123 Connaught Place, New Delhi, India 110001</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Footer -->
-  <footer class="bg-blue-600 text-white py-6">
-    <div class="container mx-auto text-center">
-      <p>© 2025 PetConnect. All rights reserved.</p>
-      <div class="mt-2">
-        <a href="about.html" class="mx-2 hover:underline">About Us</a>
-        <a href="contact.html" class="mx-2 hover:underline">Contact</a>
-        <a href="donate.html" class="mx-2 hover:underline">Donate</a>
+  <footer class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="col-span-1 md:col-span-2">
+          <div class="flex items-center mb-6">
+            <i class="fas fa-paw text-blue-400 text-2xl mr-2"></i>
+            <span class="text-2xl font-bold">Pet Connect</span>
+          </div>
+          <p class="text-gray-400 mb-6 leading-relaxed">
+            Connecting loving hearts with furry souls. We believe every pet deserves a loving home and every family deserves the joy of a pet companion.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
+          <ul class="space-y-3">
+            <li><a href="find.html" class="text-gray-400 hover:text-white transition duration-300">Find a Pet</a></li>
+            <li><a href="list.html" class="text-gray-400 hover:text-white transition duration-300">List an Animal</a></li>
+            <li><a href="donate.html" class="text-gray-400 hover:text-white transition duration-300">Donate</a></li>
+            <li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-300">Contact Us</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Support</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Help Center</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Adoption Guide</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Pet Care Tips</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Emergency Care</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Pet Connect. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a>
+        </div>
       </div>
     </div>
   </footer>
 
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-2xl w-full max-w-md mx-4">
+      <h2 class="text-3xl font-bold mb-6 text-gray-800">Welcome Back</h2>
+      <form id="loginForm">
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Email</label>
+          <input type="email" id="loginEmail" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Password</label>
+          <input type="password" id="loginPassword" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">Login</button>
+        <button type="button" class="w-full mt-3 text-gray-600 hover:text-gray-800 transition duration-300" onclick="hideLoginModal()">Cancel</button>
+      </form>
+      <p class="mt-6 text-center text-gray-600">Don't have an account? <a href="#" onclick="showSignupModal()" class="text-blue-600 font-medium hover:underline">Sign up</a></p>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-2xl w-full max-w-md mx-4">
+      <h2 class="text-3xl font-bold mb-6 text-gray-800">Join Pet Connect</h2>
+      <form id="signupForm">
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Name</label>
+          <input type="text" id="signupName" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Email</label>
+          <input type="email" id="signupEmail" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Password</label>
+          <input type="password" id="signupPassword" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">Sign Up</button>
+        <button type="button" class="w-full mt-3 text-gray-600 hover:text-gray-800 transition duration-300" onclick="hideSignupModal()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- EmailJS CDN -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  
   <script src="js/script.js"></script>
+  <script>
+    // Initialize EmailJS
+    (function() {
+      emailjs.init('Pn63Xpayg-dlcD8U0'); // Replace with your EmailJS public key
+    })();
+
+    // Contact form submission
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submitBtn');
+      const btnText = document.getElementById('btnText');
+      const successMessage = document.getElementById('successMessage');
+      const errorMessage = document.getElementById('errorMessage');
+      
+      // Hide previous messages
+      successMessage.classList.add('hidden');
+      errorMessage.classList.add('hidden');
+      
+      // Show loading state
+      submitBtn.disabled = true;
+      btnText.textContent = 'Sending...';
+      submitBtn.classList.add('opacity-75');
+      
+      // Prepare template parameters
+      const templateParams = {
+        from_name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
+        from_email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value || 'Not provided',
+        subject: document.getElementById('subject').value,
+        message: document.getElementById('message').value,
+        to_name: 'Pet Connect Team'
+      };
+      
+      // Send email using EmailJS
+      // emailjs.send("service_z58s0yb","template_xzs0o1t");
+
+      emailjs.send("service_z58s0yb","template_xzs0o1t", templateParams) // Replace with your service and template IDs
+        .then(function(response) {
+          console.log('SUCCESS!', response.status, response.text);
+          successMessage.classList.remove('hidden');
+          document.getElementById('contactForm').reset();
+        })
+        .catch(function(error) {
+          console.log('FAILED...', error);
+          errorMessage.classList.remove('hidden');
+        })
+        .finally(function() {
+          // Reset button state
+          submitBtn.disabled = false;
+          btnText.textContent = 'Send Message';
+          submitBtn.classList.remove('opacity-75');
+        });
+    });
+
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-button').addEventListener('click', function() {
+      // Add mobile menu functionality here
+    });
+  </script>
 </body>
 </html>

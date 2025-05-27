@@ -3,110 +3,354 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PetConnect - Donate</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <title>Donate - Pet Connect</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .gradient-bg { 
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+      position: relative;
+    }
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .donation-card:hover { transform: scale(1.05); }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans">
-  <!-- Navigation Bar -->
-  <nav class="bg-blue-600 text-white p-4 sticky top-0 z-50">
-    <div class="container mx-auto flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-bold">PetConnect</a>
-      <div class="space-x-4">
-        <a href="index.html" class="hover:underline">Home</a>
-        <a href="find.html" class="hover:underline">Find a Pet</a>
-        <a href="adopt.html" class="hover:underline">Adopt a Pet</a>
-        <a href="list.html" class="hover:underline">List an Animal</a>
-        <a href="about.html" class="hover:underline">About Us</a>
-        <a href="contact.html" class="hover:underline">Contact Us</a>
-        <a href="donate.html" class="hover:underline">Donate</a>
-        <a href="profile.html" class="hover:underline hidden" id="profileLink">Profile</a>
-        <a href="#" class="hover:underline hidden" id="logoutLink" onclick="logout()">Logout</a>
-        <a href="#" class="hover:underline" id="loginLink" onclick="showLoginModal()">Login</a>
+<body class="bg-gray-50">
+  <!-- Navigation -->
+  <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-6">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center">
+          <i class="fas fa-paw text-blue-600 text-2xl mr-2"></i>
+          <a href="index.html" class="text-2xl font-bold text-gray-800">Pet Connect</a>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+  <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Home</a>
+  <a href="find.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Find a Pet</a>
+  <a href="list.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">List an Animal</a>
+  <a href="about.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">About</a>
+  <a href="donate.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Donate</a>
+  <a href="contact.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Contact</a>
+  <a href="profile.html" id="profileLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden">Profile</a>
+  <a href="#" id="logoutLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden" onclick="logout()">Logout</a>
+  <a href="#" id="loginLink" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300" onclick="showLoginModal()">Login</a>
+  <a href="admin.html" id="adminLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden">Admin</a>
+</div>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
 
-  <!-- Donate Section -->
-  <section class="container mx-auto py-12">
-    <h2 class="text-3xl font-bold text-center mb-8">Support Our Cause</h2>
-    <div class="bg-white p-6 rounded-lg shadow-md">
-      <p class="text-lg mb-4">Your donations help us rescue and care for stray animals across India. Every rupee counts!</p>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="text-center p-4 border rounded">
-          <h3 class="text-xl font-bold">₹500</h3>
-          <p>Provides food for a pet for a month.</p>
-          <button class="bg-green-600 text-white px-4 py-2 rounded mt-2 hover:bg-green-700">Donate</button>
+  <!-- Hero Section -->
+  <section class="gradient-bg py-20">
+    <div class="container mx-auto px-6 text-center">
+      <h1 class="text-5xl font-bold text-white mb-6">Make a Difference Today</h1>
+      <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+        Your generosity helps us rescue, care for, and find loving homes for animals in need. Every donation, no matter the size, makes a real impact.
+      </p>
+      <div class="flex items-center justify-center text-blue-100 mb-8">
+        <div class="text-center mx-8">
+          <div class="text-3xl font-bold text-yellow-300">500+</div>
+          <div>Animals Rescued</div>
         </div>
-        <div class="text-center p-4 border rounded">
-          <h3 class="text-xl font-bold">₹1000</h3>
-          <p>Covers medical checkups for a pet.</p>
-          <button class="bg-green-600 text-white px-4 py-2 rounded mt-2 hover:bg-green-700">Donate</button>
+        <div class="text-center mx-8">
+          <div class="text-3xl font-bold text-yellow-300">₹2,50,000</div>
+          <div>Raised This Year</div>
         </div>
-        <div class="text-center p-4 border rounded">
-          <h3 class="text-xl font-bold">₹5000</h3>
-          <p>Supports a full rehabilitation program.</p>
-          <button class="bg-green-600 text-white px-4 py-2 rounded mt-2 hover:bg-green-700">Donate</button>
+        <div class="text-center mx-8">
+          <div class="text-3xl font-bold text-yellow-300">1,200+</div>
+          <div>Happy Adoptions</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Login Modal -->
-  <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-4">Login</h2>
-      <form id="loginForm">
-        <div class="mb-4">
-          <label for="email" class="block text-sm font-medium">Email</label>
-          <input type="email" id="email" class="w-full p-2 border rounded" required>
-        </div>
-        <div class="mb-4">
-          <label for="password" class="block text-sm font-medium">Password</label>
-          <input type="password" id="password" class="w-full p-2 border rounded" required>
-        </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Login</button>
-        <button type="button" class="ml-2 text-gray-600" onclick="hideLoginModal()">Cancel</button>
-      </form>
-      <p class="mt-4">Don't have an account? <a href="#" onclick="showSignupModal()" class="text-blue-600">Sign Up</a></p>
-    </div>
-  </div>
+  <!-- Donation Cards Section -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-gray-800 mb-4">Choose Your Impact</h2>
+        <p class="text-xl text-gray-600">Select a donation amount that feels right for you</p>
+      </div>
 
-  <!-- Signup Modal -->
-  <div id="signupModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-4">Sign Up</h2>
-      <form id="signupForm">
-        <div class="mb-4">
-          <label for="signupName" class="block text-sm font-medium">Name</label>
-          <input type="text" id="signupName" class="w-full p-2 border rounded" required>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <!-- Donation Card 1 -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden donation-card transition-all duration-300 border-2 border-gray-100 hover:border-blue-300">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                 alt="Pet Food" class="w-full h-48 object-cover">
+            <div class="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full font-semibold">
+              ₹500
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-2xl font-bold text-gray-800 mb-3">Feed a Pet</h3>
+            <p class="text-gray-600 mb-6">Provide nutritious meals for a rescued animal for one week</p>
+            <ul class="text-sm text-gray-600 mb-6 space-y-2">
+              <li><i class="fas fa-check text-green-500 mr-2"></i>7 days of quality food</li>
+              <li><i class="fas fa-check text-green-500 mr-2"></i>Essential vitamins & nutrients</li>
+              <li><i class="fas fa-check text-green-500 mr-2"></i>Helps 1 animal directly</li>
+            </ul>
+            <button onclick="redirectToDonation(500, 'Feed a Pet')" 
+                    class="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">
+              <i class="fas fa-heart mr-2"></i>Donate ₹500
+            </button>
+          </div>
         </div>
-        <div class="mb-4">
-          <label for="signupEmail" class="block text-sm font-medium">Email</label>
-          <input type="email" id="signupEmail" class="w-full p-2 border rounded" required>
+
+        <!-- Donation Card 2 -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden donation-card transition-all duration-300 border-2 border-blue-300 relative">
+          <div class="absolute top-0 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-gray-800 px-4 py-1 rounded-b-lg font-semibold text-sm">
+            Most Popular
+          </div>
+          <div class="relative mt-6">
+            <img src="https://images.unsplash.com/photo-1576201836106-db1758fd1c97?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                 alt="Veterinary Care" class="w-full h-48 object-cover">
+            <div class="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full font-semibold">
+              ₹1,500
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-2xl font-bold text-gray-800 mb-3">Medical Care</h3>
+            <p class="text-gray-600 mb-6">Cover basic veterinary treatment and vaccinations</p>
+            <ul class="text-sm text-gray-600 mb-6 space-y-2">
+              <li><i class="fas fa-check text-green-500 mr-2"></i>Basic health checkup</li>
+              <li><i class="fas fa-check text-green-500 mr-2"></i>Essential vaccinations</li>
+              <li><i class="fas fa-check text-green-500 mr-2"></i>Emergency treatment fund</li>
+            </ul>
+            <button onclick="redirectToDonation(1500, 'Medical Care')" 
+                    class="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">
+              <i class="fas fa-heart mr-2"></i>Donate ₹1,500
+            </button>
+          </div>
         </div>
-        <div class="mb-4">
-          <label for="signupPassword" class="block text-sm font-medium">Password</label>
-          <input type="password" id="signupPassword" class="w-full p-2 border rounded" required>
+
+        <!-- Donation Card 3 -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden donation-card transition-all duration-300 border-2 border-gray-100 hover:border-blue-300">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                 alt="Pet Shelter" class="w-full h-48 object-cover">
+            <div class="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full font-semibold">
+              ₹3,000
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-2xl font-bold text-gray-800 mb-3">Shelter Support</h3>
+            <p class="text-gray-600 mb-6">Help maintain safe shelter facilities for rescued animals</p>
+            <ul class="text-sm text-gray-600 mb-6 space-y-2">
+              <li><i class="fas fa-check text-green-500 mr-2"></i>Clean shelter maintenance</li>
+              <li><i class="fas fa-check text-green-500 mr-2"></i>Comfortable bedding</li>
+              <li><i class="fas fa-check text-green-500 mr-2"></i>Safe environment</li>
+            </ul>
+            <button onclick="redirectToDonation(3000, 'Shelter Support')" 
+                    class="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">
+              <i class="fas fa-heart mr-2"></i>Donate ₹3,000
+            </button>
+          </div>
         </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sign Up</button>
-        <button type="button" class="ml-2 text-gray-600" onclick="hideSignupModal()">Cancel</button>
-      </form>
+
+        <!-- Donation Card 4 -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden donation-card transition-all duration-300 border-2 border-gray-100 hover:border-blue-300">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                 alt="Pet Rescue" class="w-full h-48 object-cover">
+            <div class="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full font-semibold">
+              ₹5,000
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-2xl font-bold text-gray-800 mb-3">Rescue Mission</h3>
+            <p class="text-gray-600 mb-6">Fund a complete rescue operation from street to adoption</p>
+            <ul class="text-sm text-gray-600 mb-6 space-y-2">
+              <li><i class="fas fa-check text-green-500 mr-2"></i>Emergency rescue transport</li>
+              <li><i class="fas fa-check text-green-500 mr-2"></i>Full medical treatment</li>
+              <li><i class="fas fa-check text-green-500 mr-2"></i>Adoption preparation</li>
+            </ul>
+            <button onclick="redirectToDonation(5000, 'Rescue Mission')" 
+                    class="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">
+              <i class="fas fa-heart mr-2"></i>Donate ₹5,000
+            </button>
+          </div>
+        </div>
+
+        <!-- Donation Card 5 -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden donation-card transition-all duration-300 border-2 border-gray-100 hover:border-blue-300">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1415369629372-26f2fe60c467?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                 alt="Pet Training" class="w-full h-48 object-cover">
+            <div class="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full font-semibold">
+              ₹2,000
+            </div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-2xl font-bold text-gray-800 mb-3">Training & Care</h3>
+            <p class="text-gray-600 mb-6">Provide behavioral training and socialization for pets</p>
+            <ul class="text-sm text-gray-600 mb-6 space-y-2">
+              <li><i class="fas fa-check text-green-500 mr-2"></i>Professional training sessions</li>
+              <li><i class="fas fa-check text-green-500 mr-2"></i>Socialization activities</li>
+              <li><i class="fas fa-check text-green-500 mr-2"></i>Adoption readiness</li>
+            </ul>
+            <button onclick="redirectToDonation(2000, 'Training & Care')" 
+                    class="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">
+              <i class="fas fa-heart mr-2"></i>Donate ₹2,000
+            </button>
+          </div>
+        </div>
+
+        <!-- Custom Amount Card -->
+        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg overflow-hidden donation-card transition-all duration-300 text-white">
+          <div class="p-8 text-center">
+            <i class="fas fa-hand-holding-heart text-4xl mb-4 text-yellow-300"></i>
+            <h3 class="text-2xl font-bold mb-3">Custom Amount</h3>
+            <p class="mb-6 text-blue-100">Choose your own donation amount that feels right for you</p>
+            <div class="mb-6">
+              <input type="number" id="customAmount" placeholder="Enter amount" 
+                     class="w-full p-3 rounded-lg text-gray-800 text-center text-xl font-semibold" min="100">
+            </div>
+            <button onclick="redirectToCustomDonation()" 
+                    class="w-full bg-white text-blue-600 py-3 rounded-xl font-semibold hover:bg-gray-100 transition duration-300">
+              <i class="fas fa-heart mr-2"></i>Donate Custom Amount
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Impact Statement -->
+      <div class="text-center bg-blue-50 rounded-2xl p-8">
+        <h3 class="text-2xl font-bold text-gray-800 mb-4">Your Impact Matters</h3>
+        <p class="text-gray-600 text-lg max-w-3xl mx-auto">
+          Every donation directly contributes to saving lives. With your help, we've rescued over 500 animals this year and found loving homes for 1,200+ pets. Together, we can make an even bigger difference.
+        </p>
+      </div>
     </div>
-  </div>
+  </section>
 
   <!-- Footer -->
-  <footer class="bg-blue-600 text-white py-6">
-    <div class="container mx-auto text-center">
-      <p>© 2025 PetConnect. All rights reserved.</p>
-      <div class="mt-2">
-        <a href="about.html" class="mx-2 hover:underline">About Us</a>
-        <a href="contact.html" class="mx-2 hover:underline">Contact</a>
-        <a href="donate.html" class="mx-2 hover:underline">Donate</a>
+  <footer class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="col-span-1 md:col-span-2">
+          <div class="flex items-center mb-6">
+            <i class="fas fa-paw text-blue-400 text-2xl mr-2"></i>
+            <span class="text-2xl font-bold">Pet Connect</span>
+          </div>
+          <p class="text-gray-400 mb-6 leading-relaxed">
+            Connecting loving hearts with furry souls. We believe every pet deserves a loving home and every family deserves the joy of a pet companion.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
+          <ul class="space-y-3">
+            <li><a href="find.html" class="text-gray-400 hover:text-white transition duration-300">Find a Pet</a></li>
+            <li><a href="list.html" class="text-gray-400 hover:text-white transition duration-300">List an Animal</a></li>
+            <li><a href="donate.html" class="text-gray-400 hover:text-white transition duration-300">Donate</a></li>
+            <li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-300">Contact Us</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Support</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Help Center</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Adoption Guide</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Pet Care Tips</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Emergency Care</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Pet Connect. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a>
+        </div>
       </div>
     </div>
   </footer>
 
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-2xl w-full max-w-md mx-4">
+      <h2 class="text-3xl font-bold mb-6 text-gray-800">Welcome Back</h2>
+      <form id="loginForm">
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Email</label>
+          <input type="email" id="email" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Password</label>
+          <input type="password" id="password" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">Login</button>
+        <button type="button" class="w-full mt-3 text-gray-600 hover:text-gray-800 transition duration-300" onclick="hideLoginModal()">Cancel</button>
+      </form>
+      <p class="mt-6 text-center text-gray-600">Don't have an account? <a href="#" onclick="showSignupModal()" class="text-blue-600 font-medium hover:underline">Sign up</a></p>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-2xl w-full max-w-md mx-4">
+      <h2 class="text-3xl font-bold mb-6 text-gray-800">Join Pet Connect</h2>
+      <form id="signupForm">
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Name</label>
+          <input type="text" id="signupName" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Email</label>
+          <input type="email" id="signupEmail" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Password</label>
+          <input type="password" id="signupPassword" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">Sign Up</button>
+        <button type="button" class="w-full mt-3 text-gray-600 hover:text-gray-800 transition duration-300" onclick="hideSignupModal()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
   <script src="js/script.js"></script>
+  <script>
+    function redirectToDonation(amount, purpose) {
+      window.location.href = `donation-payment.html?amount=${amount}&purpose=${encodeURIComponent(purpose)}`;
+    }
+
+    function redirectToCustomDonation() {
+      const customAmount = document.getElementById('customAmount').value;
+      if (customAmount && customAmount >= 100) {
+        window.location.href = `donation-payment.html?amount=${customAmount}&purpose=Custom%20Donation`;
+      } else {
+        alert('Please enter a minimum amount of ₹100');
+      }
+    }
+  </script>
 </body>
 </html>

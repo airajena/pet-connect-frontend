@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Pet Connect</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .gradient-bg { 
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+      position: relative;
+    }
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .tab-button.active {
+      background: #3b82f6;
+      color: white;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- Navigation -->
+  <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-6">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center">
+          <i class="fas fa-paw text-blue-600 text-2xl mr-2"></i>
+          <a href="index.html" class="text-2xl font-bold text-gray-800">Pet Connect</a>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+  <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Home</a>
+  <a href="find.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Find a Pet</a>
+  <a href="list.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">List an Animal</a>
+  <a href="about.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">About</a>
+  <a href="donate.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Donate</a>
+  <a href="contact.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Contact</a>
+  <a href="profile.html" id="profileLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden">Profile</a>
+  <a href="#" id="logoutLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden" onclick="logout()">Logout</a>
+  <a href="#" id="loginLink" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300" onclick="showLoginModal()">Login</a>
+  <a href="admin.html" id="adminLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden">Admin</a>
+</div>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="gradient-bg py-16">
+    <div class="container mx-auto px-6 text-center">
+      <h1 class="text-4xl lg:text-5xl font-bold text-white mb-6">Admin Dashboard</h1>
+      <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+        Manage adoption requests, review applications, and oversee the pet adoption process
+      </p>
+    </div>
+  </section>
+
+  <!-- Dashboard Content -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <div class="max-w-7xl mx-auto">
+        
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white rounded-2xl shadow-lg p-6 card-hover">
+            <div class="flex items-center">
+              <div class="bg-blue-100 p-3 rounded-full mr-4">
+                <i class="fas fa-clock text-blue-600 text-xl"></i>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Pending Adoptions</p>
+                <p id="pendingCount" class="text-2xl font-bold text-gray-800">0</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white rounded-2xl shadow-lg p-6 card-hover">
+            <div class="flex items-center">
+              <div class="bg-green-100 p-3 rounded-full mr-4">
+                <i class="fas fa-check text-green-600 text-xl"></i>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Approved Adoptions</p>
+                <p id="approvedCount" class="text-2xl font-bold text-gray-800">0</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white rounded-2xl shadow-lg p-6 card-hover">
+            <div class="flex items-center">
+              <div class="bg-purple-100 p-3 rounded-full mr-4">
+                <i class="fas fa-paw text-purple-600 text-xl"></i>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Available Pets</p>
+                <p id="availablePets" class="text-2xl font-bold text-gray-800">0</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white rounded-2xl shadow-lg p-6 card-hover">
+            <div class="flex items-center">
+              <div class="bg-orange-100 p-3 rounded-full mr-4">
+                <i class="fas fa-home text-orange-600 text-xl"></i>
+              </div>
+              <div>
+                <p class="text-gray-600 text-sm">Total Pets</p>
+                <p id="totalPets" class="text-2xl font-bold text-gray-800">0</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <div class="border-b border-gray-200">
+            <nav class="flex">
+              <button onclick="switchTab('pending')" 
+                      class="tab-button active px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none">
+                <i class="fas fa-clock mr-2"></i>Pending Adoptions
+              </button>
+              <button onclick="switchTab('all')" 
+                      class="tab-button px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none">
+                <i class="fas fa-list mr-2"></i>All Adoptions
+              </button>
+              <button onclick="switchTab('animals')" 
+                      class="tab-button px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none">
+                <i class="fas fa-paw mr-2"></i>All Animals
+              </button>
+            </nav>
+          </div>
+
+          <!-- Tab Content -->
+          <div class="p-6">
+            <!-- Pending Adoptions Tab -->
+            <div id="pendingTab" class="tab-content">
+              <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-800">Pending Adoption Requests</h3>
+                <button onclick="refreshData()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                  <i class="fas fa-refresh mr-2"></i>Refresh
+                </button>
+              </div>
+              <div id="pendingAdoptions" class="space-y-4">
+                <!-- Pending adoptions will be loaded here -->
+              </div>
+            </div>
+
+            <!-- All Adoptions Tab -->
+            <div id="allTab" class="tab-content hidden">
+              <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-800">All Adoption Requests</h3>
+                <div class="flex space-x-2">
+                  <select id="statusFilter" onchange="filterAdoptions()" class="px-3 py-2 border border-gray-300 rounded-lg">
+                    <option value="">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+                  <button onclick="refreshData()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                    <i class="fas fa-refresh mr-2"></i>Refresh
+                  </button>
+                </div>
+              </div>
+              <div id="allAdoptions" class="space-y-4">
+                <!-- All adoptions will be loaded here -->
+              </div>
+            </div>
+
+            <!-- Animals Tab -->
+            <div id="animalsTab" class="tab-content hidden">
+              <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-800">All Animals</h3>
+                <div class="flex space-x-2">
+                  <select id="animalStatusFilter" onchange="filterAnimals()" class="px-3 py-2 border border-gray-300 rounded-lg">
+                    <option value="">All Status</option>
+                    <option value="available">Available</option>
+                    <option value="adopted">Adopted</option>
+                    <option value="pending">Pending</option>
+                  </select>
+                  <button onclick="refreshData()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                    <i class="fas fa-refresh mr-2"></i>Refresh
+                  </button>
+                </div>
+              </div>
+              <div id="allAnimals" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- All animals will be loaded here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="col-span-1 md:col-span-2">
+          <div class="flex items-center mb-6">
+            <i class="fas fa-paw text-blue-400 text-2xl mr-2"></i>
+            <span class="text-2xl font-bold">Pet Connect</span>
+          </div>
+          <p class="text-gray-400 mb-6 leading-relaxed">
+            Connecting loving hearts with furry souls. We believe every pet deserves a loving home and every family deserves the joy of a pet companion.
+          </p>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
+          <ul class="space-y-3">
+            <li><a href="find.html" class="text-gray-400 hover:text-white transition duration-300">Find a Pet</a></li>
+            <li><a href="list.html" class="text-gray-400 hover:text-white transition duration-300">List an Animal</a></li>
+            <li><a href="donate.html" class="text-gray-400 hover:text-white transition duration-300">Donate</a></li>
+            <li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-300">Contact Us</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Support</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Help Center</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Adoption Guide</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Pet Care Tips</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Emergency Care</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Pet Connect. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-2xl w-full max-w-md mx-4">
+      <h2 class="text-3xl font-bold mb-6 text-gray-800">Admin Login</h2>
+      <form id="loginForm">
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Email</label>
+          <input type="email" id="email" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Password</label>
+          <input type="password" id="password" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">Login</button>
+        <button type="button" class="w-full mt-3 text-gray-600 hover:text-gray-800 transition duration-300" onclick="hideLoginModal()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Approval/Rejection Modal -->
+  <div id="actionModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-2xl w-full max-w-md mx-4">
+      <h3 id="modalTitle" class="text-2xl font-bold mb-4 text-gray-800"></h3>
+      <div id="modalContent" class="mb-6"></div>
+      <textarea id="adminNotes" placeholder="Add notes (optional for approval, required for rejection)" 
+                class="w-full p-4 border border-gray-300 rounded-xl mb-4" rows="3"></textarea>
+      <div class="flex space-x-4">
+        <button id="confirmAction" class="flex-1 py-3 rounded-xl font-semibold transition duration-300"></button>
+        <button onclick="hideActionModal()" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-300 transition duration-300">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

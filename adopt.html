@@ -3,98 +3,947 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PetConnect - Adopt a Pet</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <title>Adopt a Pet - Pet Connect</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .gradient-bg { 
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+      position: relative;
+    }
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .adoption-progress {
+      background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
+    }
+    .pet-gallery img {
+      transition: transform 0.3s ease;
+    }
+    .pet-gallery img:hover {
+      transform: scale(1.05);
+    }
+    .celebration {
+      animation: celebration 2s ease-in-out;
+    }
+    @keyframes celebration {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans">
-  <!-- Navigation Bar -->
-  <nav class="bg-blue-600 text-white p-4 sticky top-0 z-50">
-    <div class="container mx-auto flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-bold">PetConnect</a>
-      <div class="space-x-4">
-        <a href="index.html" class="hover:underline">Home</a>
-        <a href="find.html" class="hover:underline">Find a Pet</a>
-        <a href="adopt.html" class="hover:underline">Adopt a Pet</a>
-        <a href="list.html" class="hover:underline">List an Animal</a>
-        <a href="about.html" class="hover:underline">About Us</a>
-        <a href="contact.html" class="hover:underline">Contact Us</a>
-        <a href="donate.html" class="hover:underline">Donate</a>
-        <a href="profile.html" class="hover:underline hidden" id="profileLink">Profile</a>
-        <a href="#" class="hover:underline hidden" id="logoutLink" onclick="logout()">Logout</a>
-        <a href="#" class="hover:underline" id="loginLink" onclick="showLoginModal()">Login</a>
+<body class="bg-gray-50">
+  <!-- Navigation -->
+  <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-6">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center">
+          <i class="fas fa-paw text-blue-600 text-2xl mr-2"></i>
+          <a href="index.html" class="text-2xl font-bold text-gray-800">Pet Connect</a>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+  <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Home</a>
+  <a href="find.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Find a Pet</a>
+  <a href="list.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">List an Animal</a>
+  <a href="about.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">About</a>
+  <a href="donate.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Donate</a>
+  <a href="contact.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Contact</a>
+  <a href="profile.html" id="profileLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden">Profile</a>
+  <a href="#" id="logoutLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden" onclick="logout()">Logout</a>
+  <a href="#" id="loginLink" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-300" onclick="showLoginModal()">Login</a>
+  <a href="admin.html" id="adminLink" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 hidden">Admin</a>
+</div>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
 
-  <!-- Adopt a Pet Section -->
-  <section class="container mx-auto py-12">
-    <h2 class="text-3xl font-bold text-center mb-8">Adopt a Pet</h2>
-    <div id="animalDetails" class="bg-white rounded-lg shadow-md p-6 mb-8"></div>
-    <form id="adoptionForm" class="bg-white p-6 rounded-lg shadow-md">
-      <div class="mb-4">
-        <label for="reason" class="block text-sm font-medium">Why do you want to adopt?</label>
-        <textarea id="reason" class="w-full p-2 border rounded" rows="4" required></textarea>
-      </div>
-      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Submit Adoption Request</button>
-    </form>
-  </section>
-
-  <!-- Login Modal -->
-  <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-4">Login</h2>
-      <form id="loginForm">
-        <div class="mb-4">
-          <label for="email" class="block text-sm font-medium">Email</label>
-          <input type="email" id="email" class="w-full p-2 border rounded" required>
-        </div>
-        <div class="mb-4">
-          <label for="password" class="block text-sm font-medium">Password</label>
-          <input type="password" id="password" class="w-full p-2 border rounded" required>
-        </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Login</button>
-        <button type="button" class="ml-2 text-gray-600" onclick="hideLoginModal()">Cancel</button>
-      </form>
-      <p class="mt-4">Don't have an account? <a href="#" onclick="showSignupModal()" class="text-blue-600">Sign Up</a></p>
-    </div>
-  </div>
-
-  <!-- Signup Modal -->
-  <div id="signupModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-lg w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-4">Sign Up</h2>
-      <form id="signupForm">
-        <div class="mb-4">
-          <label for="signupName" class="block text-sm font-medium">Name</label>
-          <input type="text" id="signupName" class="w-full p-2 border rounded" required>
-        </div>
-        <div class="mb-4">
-          <label for="signupEmail" class="block text-sm font-medium">Email</label>
-          <input type="email" id="signupEmail" class="w-full p-2 border rounded" required>
-        </div>
-        <div class="mb-4">
-          <label for="signupPassword" class="block text-sm font-medium">Password</label>
-          <input type="password" id="signupPassword" class="w-full p-2 border rounded" required>
-        </div>
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Sign Up</button>
-        <button type="button" class="ml-2 text-gray-600" onclick="hideSignupModal()">Cancel</button>
-      </form>
-    </div>
+  <!-- Dynamic Content Container -->
+  <div id="pageContent">
+    <!-- Content will be dynamically loaded here -->
   </div>
 
   <!-- Footer -->
-  <footer class="bg-blue-600 text-white py-6">
-    <div class="container mx-auto text-center">
-      <p>© 2025 PetConnect. All rights reserved.</p>
-      <div class="mt-2">
-        <a href="about.html" class="mx-2 hover:underline">About Us</a>
-        <a href="contact.html" class="mx-2 hover:underline">Contact</a>
-        <a href="donate.html" class="mx-2 hover:underline">Donate</a>
+  <footer class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="col-span-1 md:col-span-2">
+          <div class="flex items-center mb-6">
+            <i class="fas fa-paw text-blue-400 text-2xl mr-2"></i>
+            <span class="text-2xl font-bold">Pet Connect</span>
+          </div>
+          <p class="text-gray-400 mb-6 leading-relaxed">
+            Connecting loving hearts with furry souls. We believe every pet deserves a loving home and every family deserves the joy of a pet companion.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition duration-300">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
+          <ul class="space-y-3">
+            <li><a href="find.html" class="text-gray-400 hover:text-white transition duration-300">Find a Pet</a></li>
+            <li><a href="list.html" class="text-gray-400 hover:text-white transition duration-300">List an Animal</a></li>
+            <li><a href="donate.html" class="text-gray-400 hover:text-white transition duration-300">Donate</a></li>
+            <li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-300">Contact Us</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Support</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Help Center</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Adoption Guide</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Pet Care Tips</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Emergency Care</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Pet Connect. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a>
+        </div>
       </div>
     </div>
   </footer>
 
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-2xl w-full max-w-md mx-4">
+      <h2 class="text-3xl font-bold mb-6 text-gray-800">Welcome Back</h2>
+      <form id="loginForm">
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Email</label>
+          <input type="email" id="email" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Password</label>
+          <input type="password" id="password" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">Login</button>
+        <button type="button" class="w-full mt-3 text-gray-600 hover:text-gray-800 transition duration-300" onclick="hideLoginModal()">Cancel</button>
+      </form>
+      <p class="mt-6 text-center text-gray-600">Don't have an account? <a href="#" onclick="showSignupModal()" class="text-blue-600 font-medium hover:underline">Sign up</a></p>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-2xl w-full max-w-md mx-4">
+      <h2 class="text-3xl font-bold mb-6 text-gray-800">Join Pet Connect</h2>
+      <form id="signupForm">
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Name</label>
+          <input type="text" id="signupName" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Email</label>
+          <input type="email" id="signupEmail" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Password</label>
+          <input type="password" id="signupPassword" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">Sign Up</button>
+        <button type="button" class="w-full mt-3 text-gray-600 hover:text-gray-800 transition duration-300" onclick="hideSignupModal()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
   <script src="js/script.js"></script>
+  <script>
+    let currentAnimal = null;
+    let currentAdoption = null;
+
+    // Initialize adopt page
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.location.pathname.endsWith('adopt.html')) {
+        initializeAdoptPage();
+      }
+    });
+
+    async function initializeAdoptPage() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const animalId = urlParams.get('id');
+      
+      if (!animalId) {
+        showNoAnimalSelected();
+        return;
+      }
+
+      // Check if user has existing adoption for this animal
+      const token = localStorage.getItem('jwtToken');
+      if (token) {
+        await checkExistingAdoption(animalId);
+      } else {
+        await loadAnimalAndShowForm(animalId);
+      }
+    }
+
+    async function checkExistingAdoption(animalId) {
+      try {
+        const token = localStorage.getItem('jwtToken');
+        const response = await fetch(`${API_URL}/adoptions/my-adoptions`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        const adoptions = await response.json();
+        const existingAdoption = adoptions.find(adoption => 
+          adoption.animalId._id === animalId
+        );
+
+        if (existingAdoption) {
+          currentAdoption = existingAdoption;
+          currentAnimal = existingAdoption.animalId;
+          
+          if (existingAdoption.status === 'pending') {
+            showReviewPage();
+          } else if (existingAdoption.status === 'approved') {
+            showWelcomePage();
+          } else if (existingAdoption.status === 'rejected') {
+            showRejectedPage();
+          }
+        } else {
+          await loadAnimalAndShowForm(animalId);
+        }
+      } catch (error) {
+        console.error('Error checking existing adoption:', error);
+        await loadAnimalAndShowForm(animalId);
+      }
+    }
+
+    async function loadAnimalAndShowForm(animalId) {
+      try {
+        const response = await fetch(`${API_URL}/animals/${animalId}`);
+        if (!response.ok) throw new Error('Animal not found');
+        
+        currentAnimal = await response.json();
+        showAdoptionForm();
+      } catch (error) {
+        console.error('Error loading animal:', error);
+        showAnimalNotFound();
+      }
+    }
+
+    function showAdoptionForm() {
+      const content = `
+        <!-- Hero Section -->
+        <section class="gradient-bg py-16">
+          <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl lg:text-5xl font-bold text-white mb-6">Adopt Your New Best Friend</h1>
+            <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+              You're about to give a loving pet their forever home. Thank you for choosing adoption!
+            </p>
+          </div>
+        </section>
+
+        <!-- Adoption Progress -->
+        <section class="py-8 bg-white border-b">
+          <div class="container mx-auto px-6">
+            <div class="flex justify-center">
+              <div class="flex items-center space-x-4">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-semibold">
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <span class="ml-2 text-sm font-medium text-gray-700">Pet Selected</span>
+                </div>
+                <div class="w-16 h-1 bg-blue-600"></div>
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">2</div>
+                  <span class="ml-2 text-sm font-medium text-blue-600">Application</span>
+                </div>
+                <div class="w-16 h-1 bg-gray-200"></div>
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-semibold">3</div>
+                  <span class="ml-2 text-sm font-medium text-gray-500">Review</span>
+                </div>
+                <div class="w-16 h-1 bg-gray-200"></div>
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-semibold">4</div>
+                  <span class="ml-2 text-sm font-medium text-gray-500">Welcome Home</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Main Content -->
+        <section class="py-16 bg-gray-50">
+          <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+              
+              <!-- Pet Details -->
+              <div id="animalDetails" class="bg-white rounded-2xl shadow-lg overflow-hidden mb-12">
+                ${generateAnimalDetailsHTML(currentAnimal)}
+              </div>
+
+              <!-- Adoption Form -->
+              <div class="bg-white rounded-2xl shadow-lg p-8">
+                <div class="text-center mb-8">
+                  <i class="fas fa-heart text-4xl text-blue-600 mb-4"></i>
+                  <h2 class="text-3xl font-bold text-gray-800 mb-2">Adoption Application</h2>
+                  <p class="text-gray-600">Tell us why you'd be the perfect match for this pet</p>
+                </div>
+
+                <form id="adoptionForm" class="space-y-6">
+                  <!-- Adoption Reason -->
+                  <div>
+                    <label for="reason" class="block text-gray-700 font-medium mb-2">
+                      <i class="fas fa-comment-heart mr-2 text-blue-600"></i>Why do you want to adopt this pet?
+                    </label>
+                    <textarea id="reason" rows="6" required
+                              class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                              placeholder="Tell us about your experience with pets, your living situation, and why you think this pet would be perfect for your family..."></textarea>
+                  </div>
+
+                  <!-- Additional Questions -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label for="experience" class="block text-gray-700 font-medium mb-2">
+                        <i class="fas fa-star mr-2 text-blue-600"></i>Pet Experience Level
+                      </label>
+                      <select id="experience" 
+                              class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+                        <option value="">Select your experience</option>
+                        <option value="first-time">First-time pet owner</option>
+                        <option value="some">Some experience</option>
+                        <option value="experienced">Very experienced</option>
+                        <option value="professional">Professional (vet, trainer, etc.)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label for="housing" class="block text-gray-700 font-medium mb-2">
+                        <i class="fas fa-home mr-2 text-blue-600"></i>Housing Situation
+                      </label>
+                      <select id="housing" 
+                              class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+                        <option value="">Select housing type</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="house-small">Small House</option>
+                        <option value="house-large">Large House</option>
+                        <option value="farm">Farm/Rural Property</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label for="otherPets" class="block text-gray-700 font-medium mb-2">
+                        <i class="fas fa-paw mr-2 text-blue-600"></i>Other Pets at Home
+                      </label>
+                      <select id="otherPets" 
+                              class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+                        <option value="">Select option</option>
+                        <option value="none">No other pets</option>
+                        <option value="dogs">Other dogs</option>
+                        <option value="cats">Other cats</option>
+                        <option value="mixed">Dogs and cats</option>
+                        <option value="other">Other animals</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label for="timeCommitment" class="block text-gray-700 font-medium mb-2">
+                        <i class="fas fa-clock mr-2 text-blue-600"></i>Daily Time Available
+                      </label>
+                      <select id="timeCommitment" 
+                              class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+                        <option value="">Select time commitment</option>
+                        <option value="1-2">1-2 hours</option>
+                        <option value="3-4">3-4 hours</option>
+                        <option value="5-6">5-6 hours</option>
+                        <option value="full-time">Full-time care</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Emergency Contact -->
+                  <div>
+                    <label for="emergencyContact" class="block text-gray-700 font-medium mb-2">
+                      <i class="fas fa-phone mr-2 text-blue-600"></i>Emergency Contact Information
+                    </label>
+                    <input type="text" id="emergencyContact" 
+                           class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                           placeholder="Name and phone number of emergency contact">
+                  </div>
+
+                  <!-- Agreement -->
+                  <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                    <div class="flex items-start">
+                      <input type="checkbox" id="agreement" required class="mt-1 mr-3">
+                      <div>
+                        <label for="agreement" class="font-semibold text-blue-800 cursor-pointer">
+                          I agree to the adoption terms and conditions
+                        </label>
+                        <ul class="text-sm text-blue-700 mt-2 space-y-1">
+                          <li>• I will provide proper care, nutrition, and medical attention</li>
+                          <li>• I will not abandon, abuse, or neglect this pet</li>
+                          <li>• I will contact Pet Connect if I can no longer care for this pet</li>
+                          <li>• I understand this is a lifetime commitment</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Submit Button -->
+                  <div class="text-center">
+                    <button type="submit" 
+                            class="bg-blue-600 text-white px-12 py-4 rounded-xl font-semibold hover:bg-blue-700 transition duration-300 text-lg">
+                      <i class="fas fa-heart mr-2"></i>Submit Adoption Application
+                    </button>
+                    <p class="text-sm text-gray-500 mt-4">
+                      Our team will review your application and contact you within 24-48 hours
+                    </p>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+      
+      document.getElementById('pageContent').innerHTML = content;
+      setupAdoptionFormHandler();
+    }
+
+    function showReviewPage() {
+      const content = `
+        <!-- Hero Section -->
+        <section class="gradient-bg py-16">
+          <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl lg:text-5xl font-bold text-white mb-6">Application Under Review</h1>
+            <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+              Thank you for submitting your adoption application. We're reviewing it carefully!
+            </p>
+          </div>
+        </section>
+
+        <!-- Adoption Progress -->
+        <section class="py-8 bg-white border-b">
+          <div class="container mx-auto px-6">
+            <div class="flex justify-center">
+              <div class="flex items-center space-x-4">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-semibold">
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <span class="ml-2 text-sm font-medium text-gray-700">Pet Selected</span>
+                </div>
+                <div class="w-16 h-1 bg-green-500"></div>
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-semibold">
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <span class="ml-2 text-sm font-medium text-gray-700">Application</span>
+                </div>
+                <div class="w-16 h-1 bg-blue-600"></div>
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">3</div>
+                  <span class="ml-2 text-sm font-medium text-blue-600">Review</span>
+                </div>
+                <div class="w-16 h-1 bg-gray-200"></div>
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-semibold">4</div>
+                  <span class="ml-2 text-sm font-medium text-gray-500">Welcome Home</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Review Content -->
+        <section class="py-16 bg-gray-50">
+          <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+              
+              <!-- Status Card -->
+              <div class="bg-white rounded-2xl shadow-lg p-8 mb-8 text-center">
+                <div class="inline-block p-4 bg-yellow-100 rounded-full mb-6">
+                  <i class="fas fa-clock text-4xl text-yellow-600"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Application Under Review</h2>
+                <p class="text-lg text-gray-600 mb-6">
+                  Your adoption application for <strong>${currentAnimal.name}</strong> has been submitted successfully and is currently being reviewed by our team.
+                </p>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
+                  <p class="text-yellow-800">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    Submitted on: ${new Date(currentAdoption.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+                <button onclick="checkAdoptionStatus()" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">
+                  <i class="fas fa-refresh mr-2"></i>Check Status
+                </button>
+              </div>
+
+              <!-- Pet Details -->
+              <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
+                ${generateAnimalDetailsHTML(currentAnimal)}
+              </div>
+
+              <!-- What's Next -->
+              <div class="bg-white rounded-2xl shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">What Happens Next?</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div class="text-center">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <i class="fas fa-file-alt text-2xl text-blue-600"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">Review Process</h4>
+                    <p class="text-gray-600">Our team is carefully reviewing your application and checking references</p>
+                  </div>
+                  
+                  <div class="text-center">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <i class="fas fa-phone text-2xl text-blue-600"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">Contact</h4>
+                    <p class="text-gray-600">We may contact you for additional information or to schedule a meet & greet</p>
+                  </div>
+                  
+                  <div class="text-center">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <i class="fas fa-heart text-2xl text-blue-600"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">Decision</h4>
+                    <p class="text-gray-600">You'll receive notification about the adoption decision within 24-48 hours</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+      
+      document.getElementById('pageContent').innerHTML = content;
+    }
+
+    function showWelcomePage() {
+      const content = `
+        <!-- Hero Section -->
+        <section class="gradient-bg py-16">
+          <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl lg:text-5xl font-bold text-white mb-6 celebration">🎉 Congratulations! 🎉</h1>
+            <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+              Your adoption has been approved! Welcome to the Pet Connect family!
+            </p>
+          </div>
+        </section>
+
+        <!-- Adoption Progress -->
+        <section class="py-8 bg-white border-b">
+          <div class="container mx-auto px-6">
+            <div class="flex justify-center">
+              <div class="flex items-center space-x-4">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-semibold">
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <span class="ml-2 text-sm font-medium text-gray-700">Pet Selected</span>
+                </div>
+                <div class="w-16 h-1 bg-green-500"></div>
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-semibold">
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <span class="ml-2 text-sm font-medium text-gray-700">Application</span>
+                </div>
+                <div class="w-16 h-1 bg-green-500"></div>
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-semibold">
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <span class="ml-2 text-sm font-medium text-gray-700">Review</span>
+                </div>
+                <div class="w-16 h-1 bg-green-500"></div>
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-semibold">
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <span class="ml-2 text-sm font-medium text-green-600">Welcome Home!</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Welcome Content -->
+        <section class="py-16 bg-gray-50">
+          <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+              
+              <!-- Celebration Card -->
+              <div class="bg-gradient-to-r from-green-400 to-blue-500 rounded-2xl shadow-lg p-8 mb-8 text-center text-white">
+                <div class="inline-block p-4 bg-white bg-opacity-20 rounded-full mb-6">
+                  <i class="fas fa-home text-4xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold mb-4">Welcome Home, ${currentAnimal.name}!</h2>
+                <p class="text-lg mb-6">
+                  Your adoption application has been approved! ${currentAnimal.name} is now officially part of your family.
+                </p>
+                <div class="bg-white bg-opacity-20 rounded-xl p-4 mb-6">
+                  <p>
+                    <i class="fas fa-calendar mr-2"></i>
+                    Approved on: ${new Date(currentAdoption.reviewedAt).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Pet Details -->
+              <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
+                ${generateAnimalDetailsHTML(currentAnimal)}
+              </div>
+
+              <!-- Next Steps -->
+              <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Next Steps</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div class="text-center">
+                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <i class="fas fa-calendar-check text-2xl text-green-600"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">Schedule Pickup</h4>
+                    <p class="text-gray-600">Contact us to schedule a convenient time to pick up ${currentAnimal.name}</p>
+                  </div>
+                  
+                  <div class="text-center">
+                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <i class="fas fa-shopping-cart text-2xl text-green-600"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">Prepare Your Home</h4>
+                    <p class="text-gray-600">Get food, toys, bedding, and other essentials ready for your new family member</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Contact Information -->
+              <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 text-center">
+                <h4 class="text-lg font-semibold text-blue-800 mb-2">Ready to Bring ${currentAnimal.name} Home?</h4>
+                <p class="text-blue-700 mb-4">Contact us to arrange the pickup and complete the final paperwork.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                  <a href="contact.html" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">
+                    <i class="fas fa-phone mr-2"></i>Contact Us
+                  </a>
+                  <a href="profile.html" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold hover:bg-gray-300 transition duration-300">
+                    <i class="fas fa-user mr-2"></i>View Profile
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+      
+      document.getElementById('pageContent').innerHTML = content;
+    }
+
+    function showRejectedPage() {
+      const content = `
+        <!-- Hero Section -->
+        <section class="gradient-bg py-16">
+          <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl lg:text-5xl font-bold text-white mb-6">Application Update</h1>
+            <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+              Thank you for your interest in adopting ${currentAnimal.name}
+            </p>
+          </div>
+        </section>
+
+        <!-- Content -->
+        <section class="py-16 bg-gray-50">
+          <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+              
+              <!-- Status Card -->
+              <div class="bg-white rounded-2xl shadow-lg p-8 mb-8 text-center">
+                <div class="inline-block p-4 bg-red-100 rounded-full mb-6">
+                  <i class="fas fa-times text-4xl text-red-600"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Application Not Approved</h2>
+                <p class="text-lg text-gray-600 mb-6">
+                  Unfortunately, your application for ${currentAnimal.name} was not approved at this time.
+                </p>
+                ${currentAdoption.adminNotes ? `
+                <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+                  <h4 class="font-semibold text-red-800 mb-2">Admin Notes:</h4>
+                  <p class="text-red-700">${currentAdoption.adminNotes}</p>
+                </div>
+                ` : ''}
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                  <a href="find.html" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">
+                    <i class="fas fa-search mr-2"></i>Find Other Pets
+                  </a>
+                  <a href="contact.html" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold hover:bg-gray-300 transition duration-300">
+                    <i class="fas fa-phone mr-2"></i>Contact Us
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+      
+      document.getElementById('pageContent').innerHTML = content;
+    }
+
+    function generateAnimalDetailsHTML(animal) {
+      const imageGallery = animal.images && animal.images.length > 0 
+        ? animal.images.map((img, index) => `
+            <img src="${img}" alt="${animal.name} ${index + 1}" 
+                 class="w-full h-64 object-cover rounded-xl cursor-pointer hover:opacity-90 transition duration-300"
+                 onclick="openImageModal('${img}')">
+          `).join('')
+        : `<img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+               alt="${animal.name}" class="w-full h-64 object-cover rounded-xl">`;
+
+      return `
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
+          <!-- Pet Images -->
+          <div class="space-y-4">
+            <div class="pet-gallery grid grid-cols-1 gap-4">
+              ${imageGallery}
+            </div>
+          </div>
+          
+          <!-- Pet Information -->
+          <div class="space-y-6">
+            <div class="text-center lg:text-left">
+              <h2 class="text-4xl font-bold text-gray-800 mb-2">${animal.name}</h2>
+              <div class="flex items-center justify-center lg:justify-start mb-4">
+                <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold">
+                  <i class="fas fa-heart mr-2"></i>Available for Adoption
+                </span>
+              </div>
+            </div>
+            
+            <!-- Pet Stats -->
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-gray-50 p-4 rounded-xl">
+                <div class="flex items-center mb-2">
+                  <i class="fas fa-paw text-blue-600 mr-2"></i>
+                  <span class="text-gray-600 font-medium">Species</span>
+                </div>
+                <p class="text-lg font-semibold text-gray-800">${animal.species.charAt(0).toUpperCase() + animal.species.slice(1)}</p>
+              </div>
+              
+              <div class="bg-gray-50 p-4 rounded-xl">
+                <div class="flex items-center mb-2">
+                  <i class="fas fa-dna text-blue-600 mr-2"></i>
+                  <span class="text-gray-600 font-medium">Breed</span>
+                </div>
+                <p class="text-lg font-semibold text-gray-800">${animal.breed || 'Mixed'}</p>
+              </div>
+              
+              <div class="bg-gray-50 p-4 rounded-xl">
+                <div class="flex items-center mb-2">
+                  <i class="fas fa-birthday-cake text-blue-600 mr-2"></i>
+                  <span class="text-gray-600 font-medium">Age</span>
+                </div>
+                <p class="text-lg font-semibold text-gray-800">${animal.age ? Math.floor(animal.age / 12) + ' years ' + (animal.age % 12) + ' months' : 'Unknown'}</p>
+              </div>
+              
+              <div class="bg-gray-50 p-4 rounded-xl">
+                <div class="flex items-center mb-2">
+                  <i class="fas fa-venus-mars text-blue-600 mr-2"></i>
+                  <span class="text-gray-600 font-medium">Gender</span>
+                </div>
+                <p class="text-lg font-semibold text-gray-800">${animal.gender || 'Unknown'}</p>
+              </div>
+              
+              <div class="bg-gray-50 p-4 rounded-xl">
+                <div class="flex items-center mb-2">
+                  <i class="fas fa-heartbeat text-blue-600 mr-2"></i>
+                  <span class="text-gray-600 font-medium">Health</span>
+                </div>
+                <p class="text-lg font-semibold text-gray-800">${animal.healthStatus || 'Good'}</p>
+              </div>
+              
+              <div class="bg-gray-50 p-4 rounded-xl">
+                <div class="flex items-center mb-2">
+                  <i class="fas fa-map-marker-alt text-blue-600 mr-2"></i>
+                  <span class="text-gray-600 font-medium">Location</span>
+                </div>
+                <p class="text-lg font-semibold text-gray-800">${animal.address || 'Location not specified'}</p>
+              </div>
+            </div>
+            
+            <!-- Description -->
+            <div class="bg-blue-50 p-6 rounded-xl">
+              <h3 class="text-lg font-semibold text-gray-800 mb-3">
+                <i class="fas fa-info-circle text-blue-600 mr-2"></i>About ${animal.name}
+              </h3>
+              <p class="text-gray-700 leading-relaxed">
+                ${animal.description || `${animal.name} is a wonderful ${animal.species} looking for a loving home. They would make a great addition to the right family!`}
+              </p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function setupAdoptionFormHandler() {
+      const form = document.getElementById('adoptionForm');
+      if (form) {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const token = localStorage.getItem('jwtToken');
+          if (!token) {
+            showLoginModal();
+            return;
+          }
+
+          const reason = document.getElementById('reason').value;
+          const experience = document.getElementById('experience')?.value || '';
+          const housing = document.getElementById('housing')?.value || '';
+          const otherPets = document.getElementById('otherPets')?.value || '';
+          const timeCommitment = document.getElementById('timeCommitment')?.value || '';
+          const emergencyContact = document.getElementById('emergencyContact')?.value || '';
+
+          const fullReason = `
+Adoption Reason: ${reason}
+
+Experience Level: ${experience}
+Housing Situation: ${housing}
+Other Pets: ${otherPets}
+Time Commitment: ${timeCommitment}
+Emergency Contact: ${emergencyContact}
+          `.trim();
+
+          try {
+            const response = await fetch(`${API_URL}/adoptions`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              },
+              body: JSON.stringify({ 
+                animalId: currentAnimal._id, 
+                reason: fullReason 
+              }),
+            });
+            
+            const data = await response.json();
+            if (response.ok) {
+              currentAdoption = data;
+              showReviewPage();
+            } else {
+              alert(data.message || 'Failed to submit adoption request');
+            }
+          } catch (error) {
+            console.error('Error submitting adoption:', error);
+            alert('Error: ' + error.message);
+          }
+        });
+      }
+    }
+
+    async function checkAdoptionStatus() {
+      try {
+        const token = localStorage.getItem('jwtToken');
+        const response = await fetch(`${API_URL}/adoptions/my-adoptions`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        const adoptions = await response.json();
+        const updatedAdoption = adoptions.find(adoption => 
+          adoption.animalId._id === currentAnimal._id
+        );
+
+        if (updatedAdoption) {
+          currentAdoption = updatedAdoption;
+          
+          if (updatedAdoption.status === 'approved') {
+            showWelcomePage();
+          } else if (updatedAdoption.status === 'rejected') {
+            showRejectedPage();
+          } else {
+            // Still pending, show updated info
+            showReviewPage();
+          }
+        }
+      } catch (error) {
+        console.error('Error checking adoption status:', error);
+        alert('Error checking status. Please try again.');
+      }
+    }
+
+    function showNoAnimalSelected() {
+      const content = `
+        <section class="py-16 bg-gray-50">
+          <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+              <i class="fas fa-exclamation-triangle text-6xl text-red-300 mb-6"></i>
+              <h3 class="text-2xl font-bold text-red-600 mb-4">No Pet Selected</h3>
+              <p class="text-gray-500 mb-8">Please select a pet from the Find a Pet page</p>
+              <a href="find.html" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">
+                Browse Pets
+              </a>
+            </div>
+          </div>
+        </section>
+      `;
+      document.getElementById('pageContent').innerHTML = content;
+    }
+
+    function showAnimalNotFound() {
+      const content = `
+        <section class="py-16 bg-gray-50">
+          <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+              <i class="fas fa-exclamation-triangle text-6xl text-red-300 mb-6"></i>
+              <h3 class="text-2xl font-bold text-red-600 mb-4">Pet Not Found</h3>
+              <p class="text-gray-500 mb-8">The pet you're looking for is no longer available or doesn't exist</p>
+              <a href="find.html" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-300">
+                Browse Other Pets
+              </a>
+            </div>
+          </div>
+        </section>
+      `;
+      document.getElementById('pageContent').innerHTML = content;
+    }
+
+    function openImageModal(imageSrc) {
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50';
+      modal.innerHTML = `
+        <div class="max-w-4xl max-h-full p-4 relative">
+          <img src="${imageSrc}" class="max-w-full max-h-full rounded-lg">
+          <button onclick="this.parentElement.parentElement.remove()" 
+                  class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-10 h-10 flex items-center justify-center">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    // Make functions globally available
+    window.checkAdoptionStatus = checkAdoptionStatus;
+    window.openImageModal = openImageModal;
+  </script>
 </body>
 </html>
